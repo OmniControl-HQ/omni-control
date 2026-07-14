@@ -10,11 +10,16 @@
     "postinstall": "node scripts/ensure-electron.js"
   },
   "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@types/node": "^20.14.9",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.3.0",
     "electron": "^31.0.0",
     "electron-vite": "^2.3.0",
     "typescript": "^5.4.5",
