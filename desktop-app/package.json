@@ -1,0 +1,18 @@
+{
+  "name": "omnicontrol-desktop",
+  "version": "1.0.0",
+  "description": "OmniControl Desktop Server App (TypeScript)",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && electron ."
+  },
+  "dependencies": {
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "typescript": "^5.4.5",
+    "@types/node": "^20.14.9"
+  }
+}

@@ -1,0 +1,6 @@
+packages:
+  - 'desktop-app'
+  - 'mobile-app'
+
+allowBuilds:
+  electron: true
