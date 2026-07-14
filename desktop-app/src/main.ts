@@ -1,7 +1,7 @@
-import { app, BrowserWindow } from 'electron';
-import * as path from 'path';
-import * as http from 'http';
-import { Server } from 'socket.io';
+import { app, BrowserWindow } from "electron";
+import * as path from "path";
+import * as http from "http";
+import { Server } from "socket.io";
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -9,28 +9,28 @@ function createWindow(): void {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
-    }
+      contextIsolation: false,
+    },
   });
 
   // Since main.js compiles to dist/main.js, index.html is located at ../index.html relative to dist/main.js
-  win.loadFile(path.join(__dirname, '../index.html'));
+  win.loadFile(path.join(__dirname, "../index.html"));
 }
 
 // Socket.io Server Setup
 const server = http.createServer();
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
-io.on('connection', (socket) => {
-  console.log('Mobile connected');
-  
-  socket.on('disconnect', () => {
-    console.log('Mobile disconnected');
+io.on("connection", (socket) => {
+  console.log("Mobile connected");
+
+  socket.on("disconnect", () => {
+    console.log("Mobile disconnected");
   });
 });
 
@@ -42,15 +42,15 @@ server.listen(PORT, () => {
 app.whenReady().then(() => {
   createWindow();
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
