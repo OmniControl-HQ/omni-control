@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "desktop:dev": "pnpm --filter omnicontrol-desktop dev",
     "desktop:build": "pnpm --filter omnicontrol-desktop build",
     "desktop:start": "pnpm --filter omnicontrol-desktop start",
     "mobile:start": "pnpm --filter omnicontrol-mobile start"

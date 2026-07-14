@@ -1,19 +1,23 @@
 {
   "name": "omnicontrol-desktop",
   "version": "1.0.0",
-  "description": "OmniControl Desktop Server App (TypeScript)",
-  "main": "dist/main.js",
+  "description": "OmniControl Desktop Server App",
+  "main": "out/main/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && electron .",
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
     "postinstall": "node scripts/ensure-electron.js"
   },
   "dependencies": {
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@types/node": "^20.14.9",
     "electron": "^31.0.0",
+    "electron-vite": "^2.3.0",
     "typescript": "^5.4.5",
-    "@types/node": "^20.14.9"
+    "vite": "^5.3.1"
   }
 }
