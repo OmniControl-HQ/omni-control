@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from "electron";
+import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { join } from "path";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -24,6 +24,16 @@ function createWindow(): void {
     shell.openExternal(details.url);
     return { action: "deny" };
   });
+
+  ipcMain.on("window-minimize", () => win.minimize());
+  ipcMain.on("window-toggle-maximize", () => {
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
+  });
+  ipcMain.on("window-close", () => win.close());
 
   // HMR for renderer — electron-vite handles this automatically in dev mode
   if (process.env["ELECTRON_RENDERER_URL"]) {
