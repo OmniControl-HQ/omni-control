@@ -1,5 +1,5 @@
-import TitleBar from "./TitleBar";
-import { OverviewScreen } from "./Dashboard";
+import TitleBar from "./components/core/TitleBar";
+import { OverviewScreen } from "./components/routes/Dashboard";
 
 export default function App() {
   return (
