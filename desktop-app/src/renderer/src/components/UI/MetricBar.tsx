@@ -13,7 +13,7 @@ export function MetricBar({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-between text-[12px] leading-[16px] tracking-[0.05em] font-semibold">
+      <div className="flex justify-between text-[12px] leading-4 tracking-wider font-semibold">
         <span className="text-[#c4c7c7]">{label}</span>
         <span className="text-[#e2e2e4] font-bold">{valueLabel}</span>
       </div>

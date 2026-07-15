@@ -11,10 +11,10 @@ export function DeviceItem({ device }: { device: Device }) {
           <Icon name={device.icon} className="" />
         </div>
         <div>
-          <h3 className="text-[14px] leading-[20px] tracking-[0.01em] font-medium text-[#e2e2e4]">
+          <h3 className="text-[14px] leading-5 tracking-[0.01em] font-medium text-[#e2e2e4]">
             {device.name}
           </h3>
-          <p className="text-[12px] leading-[16px] tracking-[0.05em] font-semibold text-[#c4c7c7]">
+          <p className="text-[12px] leading-4 tracking-wider font-semibold text-[#c4c7c7]">
             {device.role} • {device.ip}
           </p>
         </div>
@@ -22,13 +22,13 @@ export function DeviceItem({ device }: { device: Device }) {
       <div className="flex flex-col items-end leading-tight">
         <span
           className={cx(
-            "text-[12px] leading-[16px] tracking-[0.05em] font-semibold",
+            "text-[12px] leading-4 tracking-wider font-semibold",
             latencyClass(device.latencyTone),
           )}
         >
           {device.latencyMs}ms
         </span>
-        <span className="text-[12px] leading-[16px] tracking-[0.05em] font-semibold text-[#c4c7c7]">
+        <span className="text-[12px] leading-4 tracking-wider font-semibold text-[#c4c7c7]">
           Latency
         </span>
       </div>
