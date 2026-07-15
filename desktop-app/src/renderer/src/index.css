@@ -23,6 +23,26 @@ body {
     sans-serif;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .glass-panel {
   background: rgba(26, 28, 30, 0.2);
   backdrop-filter: blur(40px);

@@ -94,8 +94,8 @@ export function OverviewScreen() {
           <TopAppBar online ip="192.168.1.145" />
 
           <div className="flex-1 p-6 overflow-y-auto overflow-x-hidden flex flex-col gap-3 relative">
-            <div className="grid grid-cols-2 gap-3">
-              <GlassPanel className="rounded-xl p-5 flex flex-col gap-4 col-span-2">
+            <div className="flex flex-col gap-3 flex-1">
+              <GlassPanel className="rounded-xl p-5 flex flex-col gap-4">
                 <div className="flex justify-between items-end mb-2">
                   <h2 className="text-[20px] leading-7 font-medium text-[#e2e2e4]">
                     System Performance
@@ -120,7 +120,7 @@ export function OverviewScreen() {
                 </div>
               </GlassPanel>
 
-              <GlassPanel className="rounded-xl p-5 flex flex-col h-64 col-span-2">
+              <GlassPanel className="rounded-xl p-5 flex flex-col flex-1">
                 <div className="flex justify-between items-center mb-4 shrink-0">
                   <h2 className="text-[20px] leading-7 font-medium text-[#e2e2e4]">
                     Active Connections
