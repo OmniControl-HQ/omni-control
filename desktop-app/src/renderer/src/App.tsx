@@ -1,16 +1,13 @@
-import { useState, useEffect } from "react";
 import TitleBar from "./TitleBar";
+import { OverviewScreen } from "./Dashboard";
 
 export default function App() {
-  const [clientCount, setClientCount] = useState(0);
-
-  useEffect(() => {}, []);
-
   return (
-    <>
-      <main className=" h-screen w-screen bg-red-300">
-        <TitleBar />
-      </main>
-    </>
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
+      <TitleBar />
+      <div className="flex-1 overflow-hidden">
+        <OverviewScreen />
+      </div>
+    </div>
   );
 }
