@@ -1,8 +1,9 @@
 import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { join } from "path";
-import { createServer } from "http";
+import Fastify from "fastify";
 import { Server } from "socket.io";
 
+// create frameless window for electron
 function createWindow(): void {
   const win = new BrowserWindow({
     width: 820,
@@ -14,6 +15,7 @@ function createWindow(): void {
       preload: join(__dirname, "../preload/index.js"),
       sandbox: false,
     },
+    resizable: false,
   });
 
   win.on("ready-to-show", () => {
@@ -43,9 +45,13 @@ function createWindow(): void {
   }
 }
 
-// ─── Socket.io Server ───────────────────────────────────────────────────────
-const httpServer = createServer();
-const io = new Server(httpServer, {
+// http server
+const fastify = Fastify({
+  logger: true,
+});
+
+// socket I.O server
+const io = new Server(fastify.server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
@@ -65,12 +71,17 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = 5000;
-httpServer.listen(PORT, () => {
-  console.log(`[OmniControl] Socket.io server listening on port ${PORT}`);
+const PORT = 4321;
+fastify.listen({ port: PORT, host: "0.0.0.0" }, (err) => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+
+  fastify.log.info(`HTTP Server running in PORT : ${PORT}`);
 });
 
-// ─── App lifecycle ───────────────────────────────────────────────────────────
+// app lifecycle , will close after closing the app
 app.whenReady().then(() => {
   createWindow();
   app.on("activate", () => {

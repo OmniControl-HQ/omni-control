@@ -4,15 +4,18 @@
   "description": "OmniControl Desktop Server App",
   "main": "out/main/index.js",
   "scripts": {
-    "dev": "electron-vite dev",
+    "dev": "electron-vite dev --watch",
     "build": "electron-vite build",
     "start": "electron-vite preview",
     "postinstall": "node scripts/ensure-electron.js"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "fastify": "^5.10.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",

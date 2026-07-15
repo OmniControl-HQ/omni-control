@@ -3,6 +3,7 @@
   "include": ["src/renderer/src/**/*"],
   "compilerOptions": {
     "composite": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["vite/client"]
   }
 }
