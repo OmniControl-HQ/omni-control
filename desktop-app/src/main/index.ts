@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { join } from "path";
 import Fastify from "fastify";
 import { Server } from "socket.io";
+import icon from "./assets/icon.png?asset";
 
 // create frameless window for electron
 function createWindow(): void {
@@ -11,6 +12,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     frame: false,
+    icon: icon,
     webPreferences: {
       preload: join(__dirname, "../preload/index.js"),
       sandbox: false,
@@ -28,13 +30,6 @@ function createWindow(): void {
   });
 
   ipcMain.on("window-minimize", () => win.minimize());
-  ipcMain.on("window-toggle-maximize", () => {
-    if (win.isMaximized()) {
-      win.unmaximize();
-    } else {
-      win.maximize();
-    }
-  });
   ipcMain.on("window-close", () => win.close());
 
   // HMR for renderer — electron-vite handles this automatically in dev mode

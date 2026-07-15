@@ -14,7 +14,7 @@ export function SideNav({
 }) {
   return (
     <aside className="w-64 h-full flex flex-col p-6 z-10 relative">
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex app-drag items-center gap-3 mb-8">
         <img
           alt="OmniRemote Logo"
           className="w-8 h-8 rounded-full object-cover"
