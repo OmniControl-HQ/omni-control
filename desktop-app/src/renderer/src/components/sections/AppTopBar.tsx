@@ -2,7 +2,7 @@ import { cx } from "../../utils/cx";
 
 export function TopAppBar({ online, ip }: { online: boolean; ip: string }) {
   return (
-    <header className="h-16 flex justify-between items-center px-[24px] shadow-sm z-20 shrink-0">
+    <header className="h-16 flex justify-between items-center px-[24px]  z-20 shrink-0">
       <div className="flex items-center gap-3">
         <div
           className={cx(

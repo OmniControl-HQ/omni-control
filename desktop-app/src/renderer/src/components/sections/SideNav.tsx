@@ -21,7 +21,7 @@ export function SideNav({
         />
         <div>
           <h1 className="text-[20px] leading-[28px] font-bold text-[#e2e2e4]">
-            OmniRemote
+            Omni Control
           </h1>
           <p className="text-[12px] leading-[16px] tracking-[0.05em] font-semibold text-[#c4c7c7]">
             Community Server
