@@ -42,10 +42,10 @@ export function SideNav({
                 onSelect(item.key);
               }}
               className={cx(
-                "flex items-center gap-4 px-4 py-3 rounded-2xl group transition-colors active:scale-95 duration-150",
+                "flex items-center gap-4 px-4 py-3 rounded-2xl group transition-colors active:scale-95 duration-150 outline-none",
                 active
-                  ? "bg-[#454749]/50 text-[#b4b5b7] border border-white/5 hover:bg-[#333537]"
-                  : "text-[#c4c7c7] hover:bg-[#333537]/50",
+                  ? "bg-[#454749]/20 text-[#b4b5b7] border border-white/5"
+                  : "text-[#c4c7c7] hover:bg-[#454749]/10 border border-transparent",
               )}
             >
               <Icon name={item.icon} filled={active} className="text-[24px]" />
