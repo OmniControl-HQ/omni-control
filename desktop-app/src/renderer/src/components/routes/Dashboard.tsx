@@ -105,16 +105,18 @@ export function OverviewScreen() {
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <MetricBar
+                  icon="developer_board"
                   label="CPU Load"
                   valueLabel="24%"
                   percent={24}
-                  barClassName="bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.8)]"
+                  barClassName="bg-gray-400"
                 />
                 <MetricBar
+                  icon="memory"
                   label="RAM Usage"
                   valueLabel="16 / 64 GB"
                   percent={25}
-                  barClassName="bg-[#2E5BFF] shadow-[0_0_12px_rgba(46,91,255,0.8)]"
+                  barClassName="bg-gray-400"
                 />
               </div>
             </GlassPanel>

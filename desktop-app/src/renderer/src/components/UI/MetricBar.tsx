@@ -1,20 +1,26 @@
 import { cx } from "../../utils/cx";
+import { Icon } from "./Icon";
 
 export function MetricBar({
   label,
   valueLabel,
   percent,
   barClassName,
+  icon,
 }: {
   label: string;
   valueLabel: string;
   percent: number;
   barClassName: string;
+  icon?: string;
 }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between text-[12px] leading-4 tracking-wider font-semibold">
-        <span className="text-[#c4c7c7]">{label}</span>
+        <div className="flex items-center gap-2">
+          {icon && <Icon name={icon} className="text-[16px] text-[#c4c7c7]" />}
+          <span className="text-[#c4c7c7]">{label}</span>
+        </div>
         <span className="text-[#e2e2e4] font-bold">{valueLabel}</span>
       </div>
       <div className="h-1.5 w-full bg-[#1e2021]/50 border border-white/5 rounded-full overflow-hidden">
