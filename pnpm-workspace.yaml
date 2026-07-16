@@ -1,8 +1,13 @@
 packages:
-  - 'desktop-app'
-  - 'mobile-app'
+  - "desktop-app"
+  - "mobile-app"
+  - "web-app"
 
 allowBuilds:
   electron: true
   esbuild: true
   omnicontrol-desktop: true
+  omnicontrol-mobile: true
+  omnicontrol-web: true
+  sharp: true
+  unrs-resolver: true
