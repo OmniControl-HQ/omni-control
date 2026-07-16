@@ -7,18 +7,25 @@ export function MetricBar({
   percent,
   barClassName,
   icon,
+  isSpin = false,
 }: {
   label: string;
   valueLabel: string;
   percent: number;
   barClassName: string;
   icon?: string;
+  isSpin?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between text-[12px] leading-4 tracking-wider font-semibold">
         <div className="flex items-center gap-2">
-          {icon && <Icon name={icon} className="text-[16px] text-[#c4c7c7]" />}
+          {icon && (
+            <Icon
+              name={icon}
+              className={`text-[16px] text-[#c4c7c7] ${isSpin ? "animate-spin" : ""}`}
+            />
+          )}
           <span className="text-[#c4c7c7]">{label}</span>
         </div>
         <span className="text-[#e2e2e4] font-bold">{valueLabel}</span>
