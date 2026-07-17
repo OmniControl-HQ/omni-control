@@ -59,7 +59,6 @@ body {
 
 .glass-button:active {
   transform: scale(0.95);
-  box-shadow: 0 0 15px rgba(46, 91, 255, 0.15);
 }
 
 .status-dot {

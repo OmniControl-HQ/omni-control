@@ -1,5 +1,4 @@
 import { GlassPanel } from "../../UI/GlassPanel";
-import { GlassButton } from "../../UI/GlassButton";
 import { Icon } from "../../UI/Icon";
 import { DeviceItem } from "../../UI/DeviceItem";
 import { devices } from "../../../data/devices";
@@ -23,9 +22,6 @@ export function ConnectedDevicesPage() {
               className="bg-white/5 border border-transparent rounded-full pl-10 pr-4 py-2 text-sm text-white/90 outline-none focus:border-white/10 focus:bg-white/10 transition-all w-64 placeholder:text-white/30"
             />
           </div>
-          <GlassButton className="px-5 py-2 rounded-full text-red-400/80 bg-red-400/10 hover:bg-red-400/20 hover:text-red-400 text-sm transition-all border border-transparent">
-            Disconnect All
-          </GlassButton>
         </div>
       </div>
 

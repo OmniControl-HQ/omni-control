@@ -1,39 +1,7 @@
 import { GlassPanel } from "../../UI/GlassPanel";
 import { GlassButton } from "../../UI/GlassButton";
-import { Icon } from "../../UI/Icon";
-
-function SettingRow({
-  icon,
-  label,
-  description,
-  children,
-  border = true,
-}: any) {
-  return (
-    <div
-      className={`flex items-center justify-between p-5 ${border ? "border-b border-white/5" : ""}`}
-    >
-      <div className="flex items-center gap-4">
-        {icon && (
-          <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60">
-            <Icon name={icon} className="text-[20px]" />
-          </div>
-        )}
-        <div className="flex flex-col">
-          <span className="text-[15px] text-white/90 tracking-wide">
-            {label}
-          </span>
-          {description && (
-            <span className="text-[13px] text-white/40 mt-0.5">
-              {description}
-            </span>
-          )}
-        </div>
-      </div>
-      <div>{children}</div>
-    </div>
-  );
-}
+import { Switch } from "../../UI/Switch";
+import SettingRow from "../../UI/SettingsRow";
 
 export function SecurityPage() {
   return (
@@ -55,14 +23,7 @@ export function SecurityPage() {
               label="Require PIN Code"
               description="Prompt for PIN on new connection"
             >
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  defaultChecked
-                />
-                <div className="w-10 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white/70 peer-checked:after:bg-white after:border-transparent after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-white/20"></div>
-              </label>
+              <Switch defaultChecked />
             </SettingRow>
             <SettingRow
               icon="password"
@@ -70,7 +31,7 @@ export function SecurityPage() {
               description="Current: ****"
               border={false}
             >
-              <GlassButton className="px-4 py-1.5 rounded-full text-xs text-white/80 border border-white/10 hover:bg-white/5">
+              <GlassButton className="px-4 py-1.5 rounded-md text-xs text-white/80 border border-white/10 hover:bg-white/5">
                 Change PIN
               </GlassButton>
             </SettingRow>
@@ -87,10 +48,7 @@ export function SecurityPage() {
               label="IP Whitelisting"
               description="Restrict to specific IP addresses"
             >
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-10 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white/70 peer-checked:after:bg-white after:border-transparent after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-white/20"></div>
-              </label>
+              <Switch />
             </SettingRow>
             <SettingRow
               icon="enhanced_encryption"
@@ -99,7 +57,7 @@ export function SecurityPage() {
               border={false}
             >
               <div className="flex items-center gap-2 text-white/60 text-[13px] px-3 py-1.5 bg-white/5 rounded-full border border-white/5">
-                <div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]"></div>
+                <div className="w-2 h-2 rounded-full bg-green-400 "></div>
                 Active
               </div>
             </SettingRow>
