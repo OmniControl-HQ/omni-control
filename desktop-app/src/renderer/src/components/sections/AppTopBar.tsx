@@ -1,4 +1,5 @@
 import { cx } from "../../utils/cx";
+import { Icon } from "../UI/Icon";
 
 export function TopAppBar({ online, ip }: { online: boolean; ip: string }) {
   return (
@@ -16,6 +17,18 @@ export function TopAppBar({ online, ip }: { online: boolean; ip: string }) {
         <span className="text-[12px] leading-4 tracking-wider font-semibold text-[#c4c7c7] ml-2 bg-[#1e2021]/50 border border-white/5 px-2 py-1 rounded-md">
           IP: {ip}
         </span>
+        <a
+          href="https://github.com/OmniControl-HQ/omni-control"
+          target="_blank"
+          rel="noreferrer"
+          className="text-[12px]  leading-4 tracking-wide font-semibold text-[#c4c7c7] hover:text-white bg-[#1e2021]/50 border border-white/5  rounded-md inline-flex items-center gap-2 transition-all duration-300 group px-2 py-1 "
+        >
+          <Icon
+            name="star"
+            className="text-[12px]! transition-all duration-300 group-hover:text-amber-400 group-hover:scale-125 group-hover:rotate-12"
+          />
+          <span>GitHub</span>
+        </a>
       </div>
     </header>
   );
