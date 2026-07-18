@@ -28,24 +28,6 @@ const devices: Device[] = [
     latencyMs: 45,
     latencyTone: "warn",
   },
-  {
-    id: "3",
-    name: "iPhone 15 Pro",
-    role: "Viewer",
-    ip: "192.168.1.44",
-    icon: "phone_iphone",
-    latencyMs: 45,
-    latencyTone: "warn",
-  },
-  {
-    id: "3",
-    name: "iPhone 15 Pro",
-    role: "Viewer",
-    ip: "192.168.1.44",
-    icon: "phone_iphone",
-    latencyMs: 45,
-    latencyTone: "warn",
-  },
 ];
 
 export { devices };
