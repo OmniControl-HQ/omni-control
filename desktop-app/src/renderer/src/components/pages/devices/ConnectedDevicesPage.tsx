@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { devices } from "../../../data/devices";
+import { useEffect, useState } from "react";
 import { Device } from "../../../types/global";
 import { DeviceItem } from "../../UI/DeviceItem";
 import { GlassButton } from "../../UI/GlassButton";
@@ -7,14 +6,24 @@ import { GlassPanel } from "../../UI/GlassPanel";
 import { Icon } from "../../UI/Icon";
 
 export function ConnectedDevicesPage() {
-  const [connectedDevices, setConnectedDevices] = useState(devices);
+  const [connectedDevices, setConnectedDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
-  const removeDevice = () => {
+  const loadDevices = async () => {
+    const devices = await window.electron.devices.list();
+    setConnectedDevices(devices.map((device) => ({ id: device.id, name: device.name, role: device.platform, ip: device.ip, icon: device.platform.toLowerCase().includes("android") ? "phone_android" : "devices", latencyTone: "good" })));
+  };
+
+  useEffect(() => {
+    void loadDevices();
+    const interval = window.setInterval(() => void loadDevices(), 2000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const removeDevice = async () => {
     if (!selectedDevice) return;
-    setConnectedDevices((current) =>
-      current.filter((device) => device.id !== selectedDevice.id),
-    );
+    await window.electron.devices.remove(selectedDevice.id);
+    setConnectedDevices((current) => current.filter((device) => device.id !== selectedDevice.id));
     setSelectedDevice(null);
   };
 

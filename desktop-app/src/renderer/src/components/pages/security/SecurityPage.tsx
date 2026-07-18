@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GlassButton } from "../../UI/GlassButton";
 import { GlassPanel } from "../../UI/GlassPanel";
 import { Icon } from "../../UI/Icon";
@@ -10,9 +10,18 @@ export function SecurityPage() {
   const [showPin, setShowPin] = useState(false);
   const [isChangePinOpen, setIsChangePinOpen] = useState(false);
   const [newPin, setNewPin] = useState("");
+  const [requirePin, setRequirePin] = useState(true);
 
-  const savePin = () => {
+  useEffect(() => {
+    void window.electron.security.get().then((security) => {
+      setPin(security.pin);
+      setRequirePin(security.requirePin);
+    });
+  }, []);
+
+  const savePin = async () => {
     if (newPin.length !== 4) return;
+    await window.electron.security.setPin(newPin);
     setPin(newPin);
     setNewPin("");
     setShowPin(false);
@@ -37,7 +46,13 @@ export function SecurityPage() {
               label="Require PIN Code"
               description="Prompt for PIN on new connection"
             >
-              <Switch defaultChecked />
+              <Switch
+                checked={requirePin}
+                onChange={async (enabled) => {
+                  setRequirePin(enabled);
+                  await window.electron.security.setRequirePin(enabled);
+                }}
+              />
             </SettingRow>
             <SettingRow
               icon="password"

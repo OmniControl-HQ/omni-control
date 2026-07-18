@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DeviceRegistry } from "../services/device-registry";
+import { ActivityLogService } from "../services/activity-log-service";
 import { DeviceIdentification, SocketAcknowledgement } from "../types";
 
 type IdentificationResponse =
@@ -14,7 +15,11 @@ function isDeviceIdentification(value: unknown): value is DeviceIdentification {
   );
 }
 
-export function registerSocketGateway(io: Server, deviceRegistry: DeviceRegistry) {
+export function registerSocketGateway(
+  io: Server,
+  deviceRegistry: DeviceRegistry,
+  activityLogService: ActivityLogService,
+) {
   io.on("connection", (socket: Socket) => {
     socket.emit("server:ready", { protocol: "v1" });
 
@@ -31,6 +36,7 @@ export function registerSocketGateway(io: Server, deviceRegistry: DeviceRegistry
 
         const device = deviceRegistry.upsert(payload, socket.handshake.address);
         socket.data.deviceId = device.id;
+        activityLogService.record({ level: "info", category: "device", message: `${device.name} connected.` });
         acknowledge?.({ ok: true, device });
         io.emit("devices:changed", { devices: deviceRegistry.list() });
       },
@@ -39,7 +45,9 @@ export function registerSocketGateway(io: Server, deviceRegistry: DeviceRegistry
     socket.on("disconnect", () => {
       const deviceId = socket.data.deviceId as string | undefined;
       if (!deviceId) return;
+      const device = deviceRegistry.list().find((item) => item.id === deviceId);
       deviceRegistry.remove(deviceId);
+      activityLogService.record({ level: "info", category: "device", message: `${device?.name ?? "Device"} disconnected.` });
       io.emit("devices:changed", { devices: deviceRegistry.list() });
     });
   });

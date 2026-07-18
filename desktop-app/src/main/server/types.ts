@@ -22,3 +22,23 @@ export type DashboardSnapshot = {
   uptimeSeconds: number;
   devices: ConnectedDevice[];
 };
+
+export type ServerSettings = {
+  appearance: "dark-glass";
+  startOnBoot: boolean;
+  externalConnections: boolean;
+  serverPort: number;
+};
+
+export type SecuritySettings = {
+  requirePin: boolean;
+  pinConfigured: boolean;
+};
+
+export type ActivityLog = {
+  id: string;
+  timestamp: string;
+  level: "info" | "warning" | "error";
+  category: "server" | "device" | "security" | "control";
+  message: string;
+};

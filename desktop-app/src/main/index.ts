@@ -6,6 +6,16 @@ import { createControlServer } from "./server/create-control-server";
 const controlServer = createControlServer();
 
 ipcMain.handle("dashboard:get-snapshot", () => controlServer.getDashboardSnapshot());
+ipcMain.handle("devices:list", () => controlServer.getDevices());
+ipcMain.handle("devices:remove", (_, id: string) => controlServer.removeDevice(id));
+ipcMain.handle("settings:get", () => controlServer.getSettings());
+ipcMain.handle("settings:update", (_, settings) => controlServer.updateSettings(settings));
+ipcMain.handle("settings:reset", () => controlServer.resetSettings());
+ipcMain.handle("security:get", () => controlServer.getSecurity());
+ipcMain.handle("security:set-require-pin", (_, requirePin: boolean) => controlServer.updateRequirePin(requirePin));
+ipcMain.handle("security:set-pin", (_, pin: string) => controlServer.updatePin(pin));
+ipcMain.handle("logs:list", () => controlServer.getLogs());
+ipcMain.handle("logs:clear", () => controlServer.clearLogs());
 
 function createWindow(): void {
   const win = new BrowserWindow({
