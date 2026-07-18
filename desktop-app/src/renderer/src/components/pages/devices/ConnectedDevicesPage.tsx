@@ -49,9 +49,9 @@ export function ConnectedDevicesPage() {
                   <DeviceItem
                     device={device}
                     onClick={() => setSelectedDevice(device)}
-                  />
-                  {selectedDevice?.id === device.id && (
-                    <div className="mx-1 mt-2 rounded-xl p-4">
+                    expandedContent={
+                      selectedDevice?.id === device.id ? (
+                    <div className="bg-black/10 p-4">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium text-white/90">
                           Device details
@@ -90,7 +90,9 @@ export function ConnectedDevicesPage() {
                         </GlassButton>
                       </div>
                     </div>
-                  )}
+                      ) : undefined
+                    }
+                  />
                 </div>
               ))}
             </div>
