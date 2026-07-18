@@ -3,11 +3,12 @@ import { ConnectedDevice, DeviceIdentification } from "../types";
 export class DeviceRegistry {
   private readonly devices = new Map<string, ConnectedDevice>();
 
-  upsert(device: DeviceIdentification): ConnectedDevice {
+  upsert(device: DeviceIdentification, ip: string): ConnectedDevice {
     const existingDevice = this.devices.get(device.id);
     const now = new Date().toISOString();
     const connectedDevice: ConnectedDevice = {
       ...device,
+      ip,
       connectedAt: existingDevice?.connectedAt ?? now,
       lastSeenAt: now,
     };

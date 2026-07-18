@@ -5,6 +5,8 @@ import { createControlServer } from "./server/create-control-server";
 
 const controlServer = createControlServer();
 
+ipcMain.handle("dashboard:get-snapshot", () => controlServer.getDashboardSnapshot());
+
 function createWindow(): void {
   const win = new BrowserWindow({
     width: 820,

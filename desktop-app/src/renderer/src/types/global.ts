@@ -10,6 +10,6 @@ export type Device = {
   role: string;
   ip: string;
   icon: string;
-  latencyMs: number;
+  latencyMs?: number;
   latencyTone: "good" | "warn" | "bad";
 };

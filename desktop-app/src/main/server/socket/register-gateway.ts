@@ -29,7 +29,7 @@ export function registerSocketGateway(io: Server, deviceRegistry: DeviceRegistry
           return;
         }
 
-        const device = deviceRegistry.upsert(payload);
+        const device = deviceRegistry.upsert(payload, socket.handshake.address);
         socket.data.deviceId = device.id;
         acknowledge?.({ ok: true, device });
         io.emit("devices:changed", { devices: deviceRegistry.list() });

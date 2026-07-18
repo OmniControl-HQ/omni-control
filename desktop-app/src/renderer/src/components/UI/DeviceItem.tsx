@@ -24,8 +24,8 @@ export function DeviceItem({
           </div>
         </div>
         <div className="flex flex-col items-end leading-tight">
-          <span className={cx("text-[12px] font-semibold leading-4 tracking-wider", latencyClass(device.latencyTone))}>{device.latencyMs}ms</span>
-          <span className="text-[12px] font-semibold leading-4 tracking-wider text-[#c4c7c7]">Latency</span>
+          <span className={cx("text-[12px] font-semibold leading-4 tracking-wider", device.latencyMs === undefined ? "text-emerald-300" : latencyClass(device.latencyTone))}>{device.latencyMs === undefined ? "Live" : `${device.latencyMs}ms`}</span>
+          <span className="text-[12px] font-semibold leading-4 tracking-wider text-[#c4c7c7]">{device.latencyMs === undefined ? "Connected" : "Latency"}</span>
         </div>
       </button>
       {expandedContent && <div className="border-t border-white/5">{expandedContent}</div>}
