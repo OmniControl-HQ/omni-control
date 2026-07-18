@@ -4,6 +4,7 @@ packages:
   - "web-app"
 
 allowBuilds:
+  '@hurdlegroup/robotjs': set this to true or false
   electron: true
   esbuild: true
   omnicontrol-desktop: true
@@ -11,3 +12,5 @@ allowBuilds:
   omnicontrol-web: true
   sharp: true
   unrs-resolver: true
+
+onlyBuiltDependencies: '@hurdlegroup/robotjs'

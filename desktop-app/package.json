@@ -10,6 +10,7 @@
     "postinstall": "node scripts/ensure-electron.js"
   },
   "dependencies": {
+    "@hurdlegroup/robotjs": "^0.12.3",
     "@tailwindcss/vite": "^4.3.2",
     "fastify": "^5.10.0",
     "react": "^19.2.7",

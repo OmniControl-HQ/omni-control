@@ -12,6 +12,10 @@ export class SecurityService {
     return this.pin;
   }
 
+  verifyPin(pin: string): boolean {
+    return !this.requirePin || pin === this.pin;
+  }
+
   updateRequirePin(requirePin: boolean): SecuritySettings {
     this.requirePin = requirePin;
     return this.getSettings();

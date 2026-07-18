@@ -9,6 +9,7 @@ import { registerSecurityRoutes } from "./routes/security";
 import { registerServerRoutes } from "./routes/server";
 import { registerSettingsRoutes } from "./routes/settings";
 import { ActivityLogService } from "./services/activity-log-service";
+import { ControlService } from "./services/control-service";
 import { DeviceRegistry } from "./services/device-registry";
 import { DashboardService } from "./services/dashboard-service";
 import { SecurityService } from "./services/security-service";
@@ -25,6 +26,7 @@ export function createControlServer() {
   const settingsService = new SettingsService();
   const securityService = new SecurityService();
   const activityLogService = new ActivityLogService();
+  const controlService = new ControlService();
 
   server.register(registerHealthRoutes);
   server.register(registerServerRoutes, deviceRegistry);
@@ -33,7 +35,7 @@ export function createControlServer() {
   server.register(registerSettingsRoutes, settingsService);
   server.register(registerSecurityRoutes, securityService);
   server.register(registerLogRoutes, activityLogService);
-  registerSocketGateway(io, deviceRegistry, activityLogService);
+  registerSocketGateway(io, deviceRegistry, activityLogService, securityService, controlService);
 
   return {
     async start() {

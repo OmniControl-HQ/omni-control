@@ -3,7 +3,7 @@ import { ConnectedDevice, DeviceIdentification } from "../types";
 export class DeviceRegistry {
   private readonly devices = new Map<string, ConnectedDevice>();
 
-  upsert(device: DeviceIdentification, ip: string): ConnectedDevice {
+  upsert(device: Omit<DeviceIdentification, "pin">, ip: string): ConnectedDevice {
     const existingDevice = this.devices.get(device.id);
     const now = new Date().toISOString();
     const connectedDevice: ConnectedDevice = {

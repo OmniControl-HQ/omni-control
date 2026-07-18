@@ -11,6 +11,7 @@ export type DeviceIdentification = {
   id: string;
   name: string;
   platform: string;
+  pin: string;
 };
 
 export type SocketAcknowledgement<T> = (response: T) => void;
@@ -42,3 +43,9 @@ export type ActivityLog = {
   category: "server" | "device" | "security" | "control";
   message: string;
 };
+
+export type PointerMoveCommand = { dx: number; dy: number };
+export type PointerClickCommand = { button: "left" | "right" | "middle"; double?: boolean };
+export type PointerScrollCommand = { dx: number; dy: number };
+export type MediaCommand = { action: "play-pause" | "next" | "previous" | "volume-up" | "volume-down" | "mute" };
+export type ControlResult = { ok: true } | { ok: false; error: string };
