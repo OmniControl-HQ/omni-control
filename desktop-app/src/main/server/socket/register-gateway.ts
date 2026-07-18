@@ -51,6 +51,25 @@ export function registerSocketGateway(
       return true;
     };
 
+    const queuePointerMove = (payload: PointerMoveCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
+      if (!socket.data.deviceId) {
+        acknowledge?.({ ok: false, error: "Device is not authenticated." });
+        return;
+      }
+      if (!allowPointerEvent()) {
+        acknowledge?.({ ok: false, error: "Pointer rate limit exceeded." });
+        return;
+      }
+      try {
+        controlService.validatePointerMove(payload);
+      } catch (error) {
+        acknowledge?.({ ok: false, error: error instanceof Error ? error.message : "Invalid pointer movement." });
+        return;
+      }
+      controlService.movePointer(payload);
+      acknowledge?.({ ok: true });
+    };
+
     socket.on(
       "device:identify",
       (
@@ -77,13 +96,7 @@ export function registerSocketGateway(
       },
     );
 
-    socket.on("control:pointer:move", (payload: PointerMoveCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
-      if (!allowPointerEvent()) {
-        acknowledge?.({ ok: false, error: "Pointer rate limit exceeded." });
-        return;
-      }
-      respond(acknowledge, () => controlService.movePointer(payload));
-    });
+    socket.on("control:pointer:move", queuePointerMove);
 
     socket.on("control:pointer:click", (payload: PointerClickCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
       respond(acknowledge, () => {

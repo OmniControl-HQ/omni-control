@@ -21,10 +21,14 @@ export class ControlService {
   }
 
   movePointer(command: PointerMoveCommand): void {
-    if (!isFiniteNumber(command.dx) || !isFiniteNumber(command.dy)) throw new Error("Pointer movement must use finite coordinates.");
-    if (Math.abs(command.dx) > 250 || Math.abs(command.dy) > 250) throw new Error("Pointer movement exceeds the allowed range.");
+    this.validatePointerMove(command);
     const position = robot.getMousePos();
     robot.moveMouse(position.x + Math.round(command.dx), position.y + Math.round(command.dy));
+  }
+
+  validatePointerMove(command: PointerMoveCommand): void {
+    if (!isFiniteNumber(command?.dx) || !isFiniteNumber(command?.dy)) throw new Error("Pointer movement must use finite coordinates.");
+    if (Math.abs(command.dx) > 250 || Math.abs(command.dy) > 250) throw new Error("Pointer movement exceeds the allowed range.");
   }
 
   clickPointer(command: PointerClickCommand): void {
