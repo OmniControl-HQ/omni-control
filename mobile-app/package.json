@@ -1,17 +1,31 @@
 {
   "name": "omnicontrol-mobile",
   "version": "1.0.0",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "clear": "expo start --clear"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
+    "@expo/vector-icons": "^15.1.1",
     "expo": "~57.0.4",
+    "expo-blur": "~57.0.2",
+    "expo-constants": "^57.0.6",
+    "expo-font": "~57.0.1",
+    "expo-linear-gradient": "~57.0.1",
+    "expo-linking": "^57.0.3",
+    "expo-router": "^57.0.7",
     "expo-status-bar": "~57.0.0",
     "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-native": "0.86.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "^0.21.2",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
