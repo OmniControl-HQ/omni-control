@@ -1,18 +1,18 @@
-import { BlurView } from "expo-blur";
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { IconButton } from "../ui/IconButton";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { colors, spacing, typography } from "../../theme/tokens";
 
 export function TopAppBar() {
   return (
     <View style={styles.wrapper}>
-      {Platform.OS === "ios" ? (
-        <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-      ) : null}
       <View style={styles.content}>
-        <IconButton icon="sensors" />
-        <Text style={styles.title}>OmniRemote</Text>
-        <IconButton icon="battery-charging-full" />
+        <Image
+          source={require("../../assets/images/logo.png")}
+          style={{
+            height: 40,
+            width: 40,
+          }}
+        />
+        <Text style={styles.title}>Omni Control</Text>
       </View>
     </View>
   );
@@ -21,19 +21,21 @@ export function TopAppBar() {
 const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
-    top: 0,
+    top: -2,
     left: 0,
     right: 0,
     zIndex: 50,
-    backgroundColor: "rgba(17, 20, 21, 0.72)",
+    backgroundColor: "#121212",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(255, 255, 255, 0.06)",
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
   content: {
     height: 64,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    gap: 10,
     paddingHorizontal: spacing.gridGutter,
   },
   title: {

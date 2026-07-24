@@ -20,10 +20,7 @@
       "backgroundColor": "#0b0f19",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-font",
-      "expo-router"
-    ],
+    "plugins": ["expo-font", "expo-router"],
     "experiments": {
       "typedRoutes": true
     }

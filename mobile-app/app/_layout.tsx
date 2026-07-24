@@ -7,7 +7,10 @@ import {
 } from "@expo-google-fonts/inter";
 import { Stack } from "expo-router";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { colors } from "../src/theme/tokens";
 
 export default function RootLayout() {
@@ -18,6 +21,8 @@ export default function RootLayout() {
     Inter_700Bold,
   });
 
+  const insets = useSafeAreaInsets();
+
   if (!fontsLoaded) {
     return (
       <View style={styles.loader}>
@@ -27,7 +32,12 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider
+      style={{
+        paddingTop: insets.top,
+        backgroundColor: "#000",
+      }}
+    >
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
       </Stack>

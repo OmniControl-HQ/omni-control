@@ -22,12 +22,6 @@ export function PcStatusCard({
 }: PcStatusCardProps) {
   return (
     <View style={styles.ambientGlow}>
-      <LinearGradient
-        colors={["rgba(46, 91, 255, 0.12)", "rgba(46, 91, 255, 0)"]}
-        style={styles.glow}
-        start={{ x: 0.5, y: 0.5 }}
-        end={{ x: 1, y: 1 }}
-      />
       <GlassPanel contentStyle={styles.panelContent}>
         <View style={styles.headerRow}>
           <View style={styles.deviceInfo}>
@@ -39,7 +33,6 @@ export function PcStatusCard({
               <Text style={styles.networkName}>{networkName}</Text>
             </View>
           </View>
-          <StatusChip label={statusLabel} />
         </View>
 
         <LinearGradient
