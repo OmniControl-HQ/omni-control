@@ -25,7 +25,8 @@ export function registerSocketGateway(
   controlService: ControlService,
 ) {
   io.on("connection", (socket: Socket) => {
-    const pointerEvents: number[] = [];
+    const pointerEventBuffer = new Uint32Array(120);
+    let pointerEventIndex = 0;
     socket.emit("server:ready", { protocol: "v1" });
 
     const respond = (acknowledge: SocketAcknowledgement<ControlResult> | undefined, execute: () => void) => {
@@ -45,29 +46,31 @@ export function registerSocketGateway(
 
     const allowPointerEvent = () => {
       const now = Date.now();
-      while (pointerEvents[0] && now - pointerEvents[0] >= 1000) pointerEvents.shift();
-      if (pointerEvents.length >= 120) return false;
-      pointerEvents.push(now);
+      const oldest = pointerEventBuffer[pointerEventIndex];
+      if (oldest && now - oldest < 1000) return false;
+      pointerEventBuffer[pointerEventIndex] = now;
+      pointerEventIndex = (pointerEventIndex + 1) % 120;
       return true;
     };
 
-    const queuePointerMove = (payload: PointerMoveCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
+    const queuePointerMove = (payload: PointerMoveCommand) => {
       if (!socket.data.deviceId) {
-        acknowledge?.({ ok: false, error: "Device is not authenticated." });
+        console.log("[Gateway] Pointer move rejected - not authenticated");
         return;
       }
       if (!allowPointerEvent()) {
-        acknowledge?.({ ok: false, error: "Pointer rate limit exceeded." });
+        console.log("[Gateway] Pointer move rejected - rate limited");
         return;
       }
+      
+      console.log("[Gateway] Pointer move received:", payload);
       try {
         controlService.validatePointerMove(payload);
+        controlService.movePointer(payload);
+        console.log("[Gateway] Pointer move processed successfully");
       } catch (error) {
-        acknowledge?.({ ok: false, error: error instanceof Error ? error.message : "Invalid pointer movement." });
-        return;
+        console.error("[Gateway] Pointer move error:", error);
       }
-      controlService.movePointer(payload);
-      acknowledge?.({ ok: true });
     };
 
     socket.on(
@@ -76,22 +79,31 @@ export function registerSocketGateway(
         payload: unknown,
         acknowledge?: SocketAcknowledgement<IdentificationResponse>,
       ) => {
+        console.log("[Gateway] Device identification received:", payload);
+        
         if (!isDeviceIdentification(payload)) {
+          console.error("[Gateway] Invalid device identity format");
           acknowledge?.({ ok: false, error: "Invalid device identity." });
           return;
         }
 
+        console.log("[Gateway] Verifying PIN...");
         if (!securityService.verifyPin(payload.pin)) {
+          console.error("[Gateway] PIN verification failed");
           activityLogService.record({ level: "warning", category: "security", message: `Rejected connection from ${socket.handshake.address}.` });
           acknowledge?.({ ok: false, error: "Invalid connection PIN." });
           return;
         }
 
+        console.log("[Gateway] PIN verified, registering device...");
         const { pin: _, ...identity } = payload;
         const device = deviceRegistry.upsert(identity, socket.handshake.address);
         socket.data.deviceId = device.id;
+        console.log("[Gateway] Device registered with ID:", device.id);
+        console.log("[Gateway] Sending acknowledgement:", { ok: true, device });
         activityLogService.record({ level: "info", category: "device", message: `${device.name} connected.` });
         acknowledge?.({ ok: true, device });
+        console.log("[Gateway] Acknowledgement sent");
         io.emit("devices:changed", { devices: deviceRegistry.list() });
       },
     );
@@ -105,12 +117,13 @@ export function registerSocketGateway(
       });
     });
 
-    socket.on("control:pointer:scroll", (payload: PointerScrollCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
-      if (!allowPointerEvent()) {
-        acknowledge?.({ ok: false, error: "Pointer rate limit exceeded." });
-        return;
+    socket.on("control:pointer:scroll", (payload: PointerScrollCommand) => {
+      if (!socket.data.deviceId || !allowPointerEvent()) return;
+      try {
+        controlService.scrollPointer(payload);
+      } catch (error) {
+        // Silent fail for invalid scrolls
       }
-      respond(acknowledge, () => controlService.scrollPointer(payload));
     });
 
     socket.on("control:media", (payload: MediaCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {

@@ -20,6 +20,11 @@ export function createControlServer() {
   const server = Fastify({ logger: true });
   const io = new Server(server.server, {
     cors: { origin: false },
+    perMessageDeflate: false, // Disable compression for lower latency
+    httpCompression: false,
+    pingInterval: 25000,
+    pingTimeout: 5000,
+    transports: ["websocket", "polling"], // Prefer WebSocket
   });
   const deviceRegistry = new DeviceRegistry();
   const dashboardService = new DashboardService(deviceRegistry);
