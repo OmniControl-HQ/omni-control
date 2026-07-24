@@ -54,22 +54,14 @@ export function registerSocketGateway(
     };
 
     const queuePointerMove = (payload: PointerMoveCommand) => {
-      if (!socket.data.deviceId) {
-        console.log("[Gateway] Pointer move rejected - not authenticated");
-        return;
-      }
-      if (!allowPointerEvent()) {
-        console.log("[Gateway] Pointer move rejected - rate limited");
-        return;
-      }
+      if (!socket.data.deviceId) return;
+      if (!allowPointerEvent()) return;
       
-      console.log("[Gateway] Pointer move received:", payload);
       try {
         controlService.validatePointerMove(payload);
         controlService.movePointer(payload);
-        console.log("[Gateway] Pointer move processed successfully");
       } catch (error) {
-        console.error("[Gateway] Pointer move error:", error);
+        // Silent fail for invalid moves
       }
     };
 

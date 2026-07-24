@@ -128,11 +128,7 @@ class SocketService {
 
   // Mouse Control - Optimized for low latency
   sendPointerMove(dx: number, dy: number): void {
-    if (!this.authenticated || !this.socket) {
-      console.log("[Socket] Cannot send pointer move - not authenticated");
-      return;
-    }
-    console.log("[Socket] Emitting pointer:move", { dx, dy });
+    if (!this.authenticated || !this.socket) return;
     // No acknowledgement for speed
     this.socket.emit("control:pointer:move", { dx, dy } as PointerMoveCommand);
   }

@@ -17,7 +17,7 @@ export default function MouseScreen() {
     sendMouseClick,
     sendScroll,
     createTrackpadResponder,
-  } = useMouseControl({ sensitivity: 1.8, scrollSensitivity: 8 });
+  } = useMouseControl({ sensitivity: 1.5, scrollSensitivity: 10 });
 
   const trackpadResponder = useRef(createTrackpadResponder()).current;
 

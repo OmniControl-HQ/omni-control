@@ -65,16 +65,10 @@ export function useMouseControl(options: UseMouseControlOptions = {}) {
   // Mouse move with delta tracking
   const sendMouseMove = (dx: number, dy: number) => {
     // Use socketService authentication status directly to avoid stale closure
-    const isAuth = socketService.isAuthenticated();
-    console.log("[Mouse] sendMouseMove called, socketService.isAuthenticated():", isAuth);
+    if (!socketService.isAuthenticated()) return;
     
-    if (!isAuth) {
-      console.log("[Mouse] Not authenticated, skipping move");
-      return;
-    }
     const scaledDx = Math.round(dx * sensitivity);
     const scaledDy = Math.round(dy * sensitivity);
-    console.log("[Mouse] Sending move:", { dx: scaledDx, dy: scaledDy });
     socketService.sendPointerMove(scaledDx, scaledDy);
   };
 
@@ -98,6 +92,17 @@ export function useMouseControl(options: UseMouseControlOptions = {}) {
   const createTrackpadResponder = () => {
     let lastX = 0;
     let lastY = 0;
+    let accumulatedDx = 0;
+    let accumulatedDy = 0;
+    let sendInterval: NodeJS.Timeout | null = null;
+
+    const sendAccumulated = () => {
+      if (accumulatedDx !== 0 || accumulatedDy !== 0) {
+        sendMouseMove(accumulatedDx, accumulatedDy);
+        accumulatedDx = 0;
+        accumulatedDy = 0;
+      }
+    };
 
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -105,7 +110,12 @@ export function useMouseControl(options: UseMouseControlOptions = {}) {
       onPanResponderGrant: (evt) => {
         lastX = evt.nativeEvent.pageX;
         lastY = evt.nativeEvent.pageY;
-        console.log("[Trackpad] Touch started at:", { x: lastX, y: lastY });
+        accumulatedDx = 0;
+        accumulatedDy = 0;
+        
+        // Start continuous sending at 120fps
+        if (sendInterval) clearInterval(sendInterval);
+        sendInterval = setInterval(sendAccumulated, 8); // 120fps
       },
       onPanResponderMove: (evt) => {
         const currentX = evt.nativeEvent.pageX;
@@ -113,17 +123,25 @@ export function useMouseControl(options: UseMouseControlOptions = {}) {
         const dx = currentX - lastX;
         const dy = currentY - lastY;
 
+        // Accumulate all movements
         if (dx !== 0 || dy !== 0) {
-          console.log("[Trackpad] Movement detected:", { dx, dy });
-          sendMouseMove(dx, dy);
+          accumulatedDx += dx;
+          accumulatedDy += dy;
           lastX = currentX;
           lastY = currentY;
         }
       },
       onPanResponderRelease: () => {
-        console.log("[Trackpad] Touch released");
+        // Send any remaining movement
+        if (sendInterval) {
+          clearInterval(sendInterval);
+          sendInterval = null;
+        }
+        sendAccumulated();
         lastX = 0;
         lastY = 0;
+        accumulatedDx = 0;
+        accumulatedDy = 0;
       },
     });
   };

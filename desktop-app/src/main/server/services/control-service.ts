@@ -20,8 +20,8 @@ export class ControlService {
   private moveQueue = { dx: 0, dy: 0 };
   private moveTimeout: NodeJS.Timeout | null = null;
   private lastSyncTime = 0;
-  private readonly SYNC_INTERVAL = 5000; // Sync with real position every 5 seconds
-  private readonly BATCH_INTERVAL = 8; // Process moves every 8ms (~120fps)
+  private readonly SYNC_INTERVAL = 3000;
+  private readonly BATCH_INTERVAL = 8; // Back to 120fps for smoothness
 
   constructor() {
     robot.setMouseDelay(0);
@@ -46,30 +46,23 @@ export class ControlService {
       return;
     }
 
-    console.log("[ControlService] Processing move queue:", this.moveQueue);
-
     // Sync periodically to prevent drift
     if (Date.now() - this.lastSyncTime > this.SYNC_INTERVAL) {
       this.syncMousePosition();
     }
 
-    // Update local position
+    // Update local position - no smoothing for real mouse feel
     this.mouseX += this.moveQueue.dx;
     this.mouseY += this.moveQueue.dy;
 
-    // Clamp to screen bounds (prevent going negative)
-    this.mouseX = Math.max(0, Math.round(this.mouseX));
-    this.mouseY = Math.max(0, Math.round(this.mouseY));
-
-    console.log("[ControlService] Moving mouse to:", { x: this.mouseX, y: this.mouseY });
+    // Clamp to screen bounds
+    this.mouseX = Math.max(0, this.mouseX);
+    this.mouseY = Math.max(0, this.mouseY);
 
     // Execute move
     try {
-      robot.moveMouse(this.mouseX, this.mouseY);
-      console.log("[ControlService] Mouse moved successfully");
+      robot.moveMouse(Math.round(this.mouseX), Math.round(this.mouseY));
     } catch (error) {
-      console.error("[ControlService] Move mouse error:", error);
-      // On error, resync position
       this.syncMousePosition();
     }
 
@@ -84,12 +77,6 @@ export class ControlService {
     // Accumulate movements
     this.moveQueue.dx += command.dx;
     this.moveQueue.dy += command.dy;
-
-    console.log("[ControlService] Move queued:", { 
-      command, 
-      queue: this.moveQueue,
-      hasTimeout: !!this.moveTimeout 
-    });
 
     // Schedule batch processing if not already scheduled
     if (!this.moveTimeout) {
