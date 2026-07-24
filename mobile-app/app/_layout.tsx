@@ -12,6 +12,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { colors } from "../src/theme/tokens";
+import { ConnectionProvider } from "../src/contexts/ConnectionContext";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -32,16 +33,18 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider
-      style={{
-        paddingTop: insets.top,
-        backgroundColor: "#000",
-      }}
-    >
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-      </Stack>
-    </SafeAreaProvider>
+    <ConnectionProvider>
+      <SafeAreaProvider
+        style={{
+          paddingTop: insets.top,
+          backgroundColor: "#000",
+        }}
+      >
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </SafeAreaProvider>
+    </ConnectionProvider>
   );
 }
 
