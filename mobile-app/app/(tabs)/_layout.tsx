@@ -24,11 +24,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="track"
+        name="mouse"
         options={{
-          title: "Track",
+          title: "Mouse",
           tabBarIcon: ({ color }) => (
-            <Icon name="backpack" size={24} color={color as string} />
+            <Icon name="mouse" size={24} color={color as string} />
           ),
         }}
       />

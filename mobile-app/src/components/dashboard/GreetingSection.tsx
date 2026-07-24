@@ -8,7 +8,7 @@ type GreetingSectionProps = {
 
 export function GreetingSection({
   greeting = "Good Evening,",
-  name = "Alex",
+  name = "Admin",
 }: GreetingSectionProps) {
   return (
     <View style={styles.container}>
