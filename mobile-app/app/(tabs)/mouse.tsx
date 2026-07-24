@@ -1,69 +1,61 @@
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { TopAppBar } from "../../src/components/layout/TopAppBar";
-import { GlassPanel } from "../../src/components/ui/GlassPanel";
 import { GlassButton } from "../../src/components/ui/GlassButton";
 import { Icon } from "../../src/components/ui/Icon";
 import { colors, spacing, typography, radii } from "../../src/theme/tokens";
 
 export default function MouseScreen() {
-  const [isDragging, setIsDragging] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
 
   return (
     <View style={styles.screen}>
       <TopAppBar />
       <View style={styles.content}>
-        {/* Trackpad Area */}
-        <GlassPanel style={styles.trackpadContainer} contentStyle={styles.trackpadContent}>
-          <Text style={styles.trackpadLabel}>Trackpad</Text>
-          <Pressable
-            style={({ pressed }) => [
-              styles.trackpad,
-              (pressed || isDragging) && styles.trackpadActive,
-            ]}
-            onPressIn={() => setIsDragging(true)}
-            onPressOut={() => setIsDragging(false)}
-          >
+        <Pressable
+          style={({ pressed }) => [
+            styles.trackpad,
+            (pressed || isTouching) && styles.trackpadActive,
+          ]}
+          onPressIn={() => setIsTouching(true)}
+          onPressOut={() => setIsTouching(false)}
+        >
+          {!isTouching && (
             <View style={styles.trackpadIndicator}>
-              <Icon name="touch-app" size={32} color={colors.onSurfaceVariant} />
-              <Text style={styles.trackpadHint}>Touch to move cursor</Text>
+              <Icon
+                name="touch-app"
+                size={40}
+                color={colors.onSurfaceVariant}
+              />
+              <Text style={styles.trackpadHint}>Swipe to move cursor</Text>
             </View>
-          </Pressable>
+          )}
+        </Pressable>
 
-          {/* Mouse Buttons */}
+        <View style={styles.controlBar}>
           <View style={styles.mouseButtons}>
             <GlassButton style={styles.mouseButton}>
-              <Text style={styles.mouseButtonText}>L</Text>
+              <Icon name="arrow-back" size={20} color={colors.primary} />
+              <Text style={styles.mouseButtonText}>Left</Text>
             </GlassButton>
             <GlassButton style={styles.mouseButton}>
-              <Text style={styles.mouseButtonText}>R</Text>
+              <Icon name="arrow-forward" size={20} color={colors.primary} />
+              <Text style={styles.mouseButtonText}>Right</Text>
             </GlassButton>
           </View>
-        </GlassPanel>
 
-        {/* Scroll Area */}
-        <GlassPanel style={styles.scrollContainer} contentStyle={styles.scrollContent}>
-          <Text style={styles.sectionLabel}>Scroll</Text>
-          <View style={styles.scrollButtons}>
+          <View style={styles.actionRow}>
             <GlassButton style={styles.scrollButton}>
-              <Icon name="arrow-upward" size={24} color={colors.primary} />
+              <Icon name="arrow-upward" size={20} color={colors.primary} />
+            </GlassButton>
+            <GlassButton style={styles.actionButton}>
+              <Icon name="touch-app" size={20} color={colors.primary} />
+              <Text style={styles.actionText}>2x</Text>
             </GlassButton>
             <GlassButton style={styles.scrollButton}>
-              <Icon name="arrow-downward" size={24} color={colors.primary} />
+              <Icon name="arrow-downward" size={20} color={colors.primary} />
             </GlassButton>
           </View>
-        </GlassPanel>
-
-        {/* Quick Actions */}
-        <View style={styles.quickActions}>
-          <GlassButton style={styles.actionButton}>
-            <Icon name="double-arrow" size={20} color={colors.primary} />
-            <Text style={styles.actionLabel}>Double Click</Text>
-          </GlassButton>
-          <GlassButton style={styles.actionButton}>
-            <Icon name="desktop-windows" size={20} color={colors.primary} />
-            <Text style={styles.actionLabel}>Show Desktop</Text>
-          </GlassButton>
         </View>
       </View>
     </View>
@@ -78,43 +70,42 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingTop: 80,
-    paddingBottom: 120,
-    paddingHorizontal: spacing.containerPadding,
-    gap: spacing.stackGap,
-  },
-  trackpadContainer: {
-    flex: 1,
-  },
-  trackpadContent: {
-    padding: spacing.stackGap,
+    paddingBottom: 100,
+    paddingHorizontal: spacing.gridGutter,
     gap: spacing.gridGutter,
-  },
-  trackpadLabel: {
-    ...typography.labelSm,
-    color: colors.onSurfaceVariant,
-    textTransform: "uppercase",
   },
   trackpad: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: "rgba(26, 28, 30, 0.72)",
+    borderRadius: radii.lg,
+    borderWidth: 2,
+    // borderColor: "rgba(255, 255, 255, 0.05)",
+    // borderTopColor: "rgba(255, 255, 255, 0.1)",
+    // borderLeftColor: "rgba(255, 255, 255, 0.08)",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 200,
+    shadowColor: "rgba(46, 91, 255, 0.1)",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 24,
+    elevation: 4,
   },
   trackpadActive: {
     backgroundColor: "rgba(46, 91, 255, 0.08)",
-    borderColor: "rgba(46, 91, 255, 0.2)",
+    borderColor: "rgba(46, 91, 255, 0.3)",
+    borderTopColor: "rgba(46, 91, 255, 0.4)",
   },
   trackpadIndicator: {
     alignItems: "center",
-    gap: 8,
+    gap: 12,
+    opacity: 0.6,
   },
   trackpadHint: {
     ...typography.labelMd,
     color: colors.onSurfaceVariant,
+  },
+  controlBar: {
+    gap: spacing.gridGutter,
   },
   mouseButtons: {
     flexDirection: "row",
@@ -122,27 +113,18 @@ const styles = StyleSheet.create({
   },
   mouseButton: {
     flex: 1,
-    height: 56,
+    height: 64,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    gap: 8,
   },
   mouseButtonText: {
-    ...typography.headlineSm,
+    ...typography.labelMd,
     color: colors.primary,
+    fontFamily: "Inter_600SemiBold",
   },
-  scrollContainer: {
-    alignSelf: "stretch",
-  },
-  scrollContent: {
-    padding: spacing.stackGap,
-    gap: spacing.gridGutter,
-  },
-  sectionLabel: {
-    ...typography.labelSm,
-    color: colors.onSurfaceVariant,
-    textTransform: "uppercase",
-  },
-  scrollButtons: {
+  actionRow: {
     flexDirection: "row",
     gap: spacing.gridGutter,
   },
@@ -152,19 +134,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  quickActions: {
-    flexDirection: "row",
-    gap: spacing.gridGutter,
-  },
   actionButton: {
     flex: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 12,
+    height: 56,
+    flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    justifyContent: "center",
+    gap: 6,
   },
-  actionLabel: {
+  actionText: {
     ...typography.labelSm,
     color: colors.primary,
+    fontFamily: "Inter_600SemiBold",
   },
 });
