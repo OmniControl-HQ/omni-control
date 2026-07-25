@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { GlassPanel } from "../../UI/GlassPanel";
 import { Icon } from "../../UI/Icon";
 
 export function QRCodePage() {
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [qrData, setQrData] = useState<string>("");
   const [serverIp, setServerIp] = useState<string>("Loading...");
   const [serverPort] = useState<number>(4321);
   const [pin, setPin] = useState<string>("****");
@@ -25,16 +26,14 @@ export function QRCodePage() {
       const currentPin = security.pin || "4812";
       setPin(currentPin);
 
-      // Generate QR code with connection data
+      // Generate QR code data
       const connectionData = {
         ip,
         port: serverPort,
         pin: currentPin,
       };
 
-      const dataString = JSON.stringify(connectionData);
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(dataString)}`;
-      setQrCodeUrl(qrUrl);
+      setQrData(JSON.stringify(connectionData));
       setLoading(false);
 
       console.log("[QRCode] Generated connection data:", connectionData);
@@ -64,9 +63,13 @@ export function QRCodePage() {
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3">
-              <div className="p-2 bg-white rounded-lg">
-                <img src={qrCodeUrl} alt="QR Code" className="w-50 h-50" />
-              </div>
+              <QRCodeSVG
+                value={qrData}
+                size={200}
+                level="H"
+                bgColor="transparent"
+                fgColor="#e2e2e4"
+              />
               <div className="flex items-center gap-1.5 text-white/30">
                 <Icon name="qr_code_scanner" className="text-[14px]" />
                 <span className="text-[10px]">Scan with mobile</span>
