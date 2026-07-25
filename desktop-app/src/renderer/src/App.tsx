@@ -4,6 +4,7 @@ import { ConnectedDevicesPage } from "./components/pages/ConnectedDevices";
 import { LogsPage } from "./components/pages/Logs";
 import { SecurityPage } from "./components/pages/Security";
 import { SettingsPage } from "./components/pages/Settings";
+import { QRCodePage } from "./components/pages/qrcode/QRCodePage";
 import { DashboardLayout, OverviewPage } from "./components/pages/Dashboard";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
             <Route path="/" element={<DashboardLayout />}>
               <Route index element={<OverviewPage />} />
               <Route path="devices" element={<ConnectedDevicesPage />} />
+              <Route path="qrcode" element={<QRCodePage />} />
               <Route path="security" element={<SecurityPage />} />
               <Route path="logs" element={<LogsPage />} />
               <Route path="settings" element={<SettingsPage />} />

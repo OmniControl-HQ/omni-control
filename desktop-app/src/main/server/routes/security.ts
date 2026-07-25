@@ -5,13 +5,20 @@ export async function registerSecurityRoutes(
   server: FastifyInstance,
   securityService: SecurityService,
 ) {
-  server.get("/api/v1/security", async () => securityService.getSettings());
+  server.get("/api/v1/security", async () => {
+    return {
+      ...securityService.getSettings(),
+      pin: securityService.getPin(),
+    };
+  });
+  
   server.put("/api/v1/security", async (request) => {
     const body = request.body as { requirePin?: unknown };
     if (typeof body.requirePin !== "boolean")
       return securityService.getSettings();
     return securityService.updateRequirePin(body.requirePin);
   });
+  
   server.put("/api/v1/security/pin", async (request, reply) => {
     const body = request.body as { pin?: unknown };
     if (typeof body.pin !== "string")

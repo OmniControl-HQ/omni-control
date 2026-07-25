@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal, View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import { CameraView, Camera } from "expo-camera";
 import { GlassButton } from "../ui/GlassButton";
 import { Icon } from "../ui/Icon";
 import { colors, spacing, typography, radii } from "../../theme/tokens";
@@ -19,12 +20,80 @@ export function ConnectionModal() {
   const [editableIp, setEditableIp] = useState(serverIp);
   const [editablePin, setEditablePin] = useState(serverPin);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   const handleConnect = async () => {
     setIsConnecting(true);
     await connect(editableIp, editablePin);
     setIsConnecting(false);
   };
+
+  const handleScanQR = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(status === "granted");
+    if (status === "granted") {
+      setShowScanner(true);
+    }
+  };
+
+  const handleQRScanned = ({ data }: { data: string }) => {
+    try {
+      const connectionData = JSON.parse(data);
+      if (connectionData.ip && connectionData.pin) {
+        setEditableIp(connectionData.ip);
+        setEditablePin(connectionData.pin);
+        setShowScanner(false);
+        // Auto-connect after QR scan
+        setTimeout(() => {
+          connect(connectionData.ip, connectionData.pin);
+        }, 300);
+      }
+    } catch (err) {
+      console.error("Invalid QR code data:", err);
+    }
+  };
+
+  if (showScanner) {
+    return (
+      <Modal
+        visible={showConnectionModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowScanner(false)}
+      >
+        <View style={styles.scannerContainer}>
+          <CameraView
+            style={styles.camera}
+            facing="back"
+            onBarcodeScanned={handleQRScanned}
+            barcodeScannerSettings={{
+              barcodeTypes: ["qr"],
+            }}
+          >
+            <View style={styles.scannerOverlay}>
+              <View style={styles.scannerHeader}>
+                <Text style={styles.scannerTitle}>Scan QR Code</Text>
+                <Text style={styles.scannerSubtitle}>
+                  Point camera at the QR code from desktop app
+                </Text>
+              </View>
+              
+              <View style={styles.scannerFrame} />
+              
+              <Pressable
+                style={styles.cancelButton}
+                onPress={() => setShowScanner(false)}
+              >
+                <Icon name="close" size={24} color={colors.onSurface} />
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </Pressable>
+            </View>
+          </CameraView>
+        </View>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
@@ -87,6 +156,14 @@ export function ConnectionModal() {
               </View>
 
               <View style={styles.actions}>
+                <GlassButton
+                  style={styles.qrButton}
+                  onPress={handleScanQR}
+                >
+                  <Icon name="qr_code_scanner" size={20} color={colors.onSurfaceVariant} />
+                  <Text style={styles.qrButtonText}>Scan QR Code</Text>
+                </GlassButton>
+
                 <GlassButton
                   style={styles.connectButton}
                   onPress={handleConnect}
@@ -183,6 +260,19 @@ const styles = StyleSheet.create({
   actions: {
     gap: spacing.gridGutter,
   },
+  qrButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingVertical: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+  },
+  qrButtonText: {
+    ...typography.labelMd,
+    color: colors.onSurfaceVariant,
+    fontFamily: "Inter_500Medium",
+  },
   connectButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -193,6 +283,56 @@ const styles = StyleSheet.create({
   buttonText: {
     ...typography.labelMd,
     color: colors.primary,
+    fontFamily: "Inter_600SemiBold",
+  },
+  // Scanner styles
+  scannerContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
+  camera: {
+    flex: 1,
+  },
+  scannerOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 60,
+    paddingHorizontal: spacing.containerPadding,
+  },
+  scannerHeader: {
+    alignItems: "center",
+    gap: 8,
+  },
+  scannerTitle: {
+    ...typography.headlineMd,
+    color: colors.onSurface,
+  },
+  scannerSubtitle: {
+    ...typography.labelMd,
+    color: colors.onSurfaceVariant,
+    textAlign: "center",
+  },
+  scannerFrame: {
+    width: 250,
+    height: 250,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    borderRadius: radii.lg,
+  },
+  cancelButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: colors.surface,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: radii.full,
+  },
+  cancelButtonText: {
+    ...typography.labelMd,
+    color: colors.onSurface,
     fontFamily: "Inter_600SemiBold",
   },
 });
