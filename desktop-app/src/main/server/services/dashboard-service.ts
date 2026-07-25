@@ -1,4 +1,5 @@
 import os from "node:os";
+import { networkInterfaces } from "node:os";
 import { DashboardSnapshot } from "../types";
 import { DeviceRegistry } from "./device-registry";
 
@@ -12,6 +13,21 @@ function readCpuSample(): CpuSample {
     }),
     { idle: 0, total: 0 },
   );
+}
+
+function getLocalIp(): string {
+  const nets = networkInterfaces();
+  for (const name of Object.keys(nets)) {
+    const netInterfaces = nets[name];
+    if (!netInterfaces) continue;
+    for (const net of netInterfaces) {
+      // Skip internal (loopback) and non-IPv4 addresses
+      if (net.family === "IPv4" && !net.internal) {
+        return net.address;
+      }
+    }
+  }
+  return "localhost";
 }
 
 export class DashboardService {
@@ -32,6 +48,7 @@ export class DashboardService {
       memoryTotalBytes: os.totalmem(),
       uptimeSeconds: Math.floor(os.uptime()),
       devices: this.deviceRegistry.list(),
+      serverIp: getLocalIp(),
     };
   }
 }

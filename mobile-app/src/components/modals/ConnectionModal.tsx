@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Modal, View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import {
+  Modal,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { CameraView, Camera } from "expo-camera";
 import { GlassButton } from "../ui/GlassButton";
 import { Icon } from "../ui/Icon";
@@ -78,9 +85,9 @@ export function ConnectionModal() {
                   Point camera at the QR code from desktop app
                 </Text>
               </View>
-              
+
               <View style={styles.scannerFrame} />
-              
+
               <Pressable
                 style={styles.cancelButton}
                 onPress={() => setShowScanner(false)}
@@ -114,7 +121,9 @@ export function ConnectionModal() {
           {isDiscovering ? (
             <View style={styles.discoveringContainer}>
               <Icon name="sync" size={48} color={colors.primary} />
-              <Text style={styles.discoveringText}>Scanning network for PC...</Text>
+              <Text style={styles.discoveringText}>
+                Scanning network for PC...
+              </Text>
             </View>
           ) : (
             <>
@@ -156,11 +165,12 @@ export function ConnectionModal() {
               </View>
 
               <View style={styles.actions}>
-                <GlassButton
-                  style={styles.qrButton}
-                  onPress={handleScanQR}
-                >
-                  <Icon name="qr_code_scanner" size={20} color={colors.onSurfaceVariant} />
+                <GlassButton style={styles.qrButton} onPress={handleScanQR}>
+                  <Icon
+                    name="qr-code-scanner"
+                    size={20}
+                    color={colors.onSurfaceVariant}
+                  />
                   <Text style={styles.qrButtonText}>Scan QR Code</Text>
                 </GlassButton>
 

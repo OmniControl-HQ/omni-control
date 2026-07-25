@@ -31,12 +31,12 @@ export function QRCodePage() {
         port: serverPort,
         pin: currentPin,
       };
-      
+
       const dataString = JSON.stringify(connectionData);
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(dataString)}`;
       setQrCodeUrl(qrUrl);
       setLoading(false);
-      
+
       console.log("[QRCode] Generated connection data:", connectionData);
     } catch (error) {
       console.error("[QRCode] Failed to load server info:", error);
@@ -50,16 +50,13 @@ export function QRCodePage() {
         <h1 className="text-[24px] font-light tracking-wide text-white mb-0.5">
           Quick Connect
         </h1>
-        <p className="text-xs text-white/40">
-          Scan to connect instantly
-        </p>
       </div>
 
       <div className="flex gap-6 items-start">
         {/* Left: QR Code */}
-        <GlassPanel className="flex-shrink-0 flex items-center justify-center p-6 rounded-xl border-white/5">
+        <GlassPanel className="shrink-0 flex items-center justify-center p-6 rounded-xl border-white/5">
           {loading ? (
-            <div className="w-[200px] h-[200px] flex flex-col items-center justify-center gap-2">
+            <div className="w-50 h-50 flex flex-col items-center justify-center gap-2">
               <div className="animate-spin">
                 <Icon name="refresh" className="text-[32px] text-white/30" />
               </div>
@@ -68,11 +65,7 @@ export function QRCodePage() {
           ) : (
             <div className="flex flex-col items-center gap-3">
               <div className="p-2 bg-white rounded-lg">
-                <img
-                  src={qrCodeUrl}
-                  alt="QR Code"
-                  className="w-[200px] h-[200px]"
-                />
+                <img src={qrCodeUrl} alt="QR Code" className="w-50 h-50" />
               </div>
               <div className="flex items-center gap-1.5 text-white/30">
                 <Icon name="qr_code_scanner" className="text-[14px]" />
@@ -88,35 +81,50 @@ export function QRCodePage() {
             <h2 className="text-[11px] font-medium text-white/50 uppercase tracking-wider mb-3">
               Connection Details
             </h2>
-            
+
             <div className="space-y-2.5">
               <div className="flex items-center gap-2">
-                <Icon name="router" className="text-[14px] text-white/30 flex-shrink-0" />
+                <Icon
+                  name="router"
+                  className="text-[14px] text-white/30 shrink-0"
+                />
                 <div className="flex-1 min-w-0">
                   <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
                     IP Address
                   </label>
-                  <span className="font-mono text-xs text-white/70 block">{serverIp}</span>
+                  <span className="font-mono text-xs text-white/70 block">
+                    {serverIp}
+                  </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <Icon name="settings_ethernet" className="text-[14px] text-white/30 flex-shrink-0" />
+                <Icon
+                  name="settings_ethernet"
+                  className="text-[14px] text-white/30 shrink-0"
+                />
                 <div className="flex-1 min-w-0">
                   <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
                     Port
                   </label>
-                  <span className="font-mono text-xs text-white/70 block">{serverPort}</span>
+                  <span className="font-mono text-xs text-white/70 block">
+                    {serverPort}
+                  </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <Icon name="lock" className="text-[14px] text-white/30 flex-shrink-0" />
+                <Icon
+                  name="lock"
+                  className="text-[14px] text-white/30 shrink-0"
+                />
                 <div className="flex-1 min-w-0">
                   <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
                     PIN
                   </label>
-                  <span className="font-mono text-sm text-white/70 tracking-widest block">{pin}</span>
+                  <span className="font-mono text-sm text-white/70 tracking-widest block">
+                    {pin}
+                  </span>
                 </div>
               </div>
             </div>
@@ -124,9 +132,14 @@ export function QRCodePage() {
 
           <GlassPanel className="p-3 rounded-xl border-white/5 bg-blue-500/5">
             <div className="flex items-start gap-2">
-              <Icon name="info" className="text-[14px] text-blue-400/50 mt-0.5 flex-shrink-0" />
+              <Icon
+                name="info"
+                className="text-[14px] text-blue-400/50 mt-0.5 shrink-0"
+              />
               <p className="text-[10px] text-white/40 leading-relaxed">
-                Open mobile app, tap <span className="text-white/60">"Scan QR Code"</span> when connection fails
+                Open mobile app, tap{" "}
+                <span className="text-white/60">"Scan QR Code"</span> when
+                connection fails
               </p>
             </div>
           </GlassPanel>

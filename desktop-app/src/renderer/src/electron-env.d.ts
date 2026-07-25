@@ -31,6 +31,7 @@ declare global {
     memoryTotalBytes: number;
     uptimeSeconds: number;
     devices: DashboardDevice[];
+    serverIp: string;
   };
 
   type ServerSettings = { appearance: "dark-glass"; startOnBoot: boolean; externalConnections: boolean; serverPort: number };

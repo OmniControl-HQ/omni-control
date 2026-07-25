@@ -22,6 +22,7 @@ export type DashboardSnapshot = {
   memoryTotalBytes: number;
   uptimeSeconds: number;
   devices: ConnectedDevice[];
+  serverIp: string;
 };
 
 export type ServerSettings = {
