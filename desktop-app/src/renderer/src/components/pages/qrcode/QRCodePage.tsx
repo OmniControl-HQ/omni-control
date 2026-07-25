@@ -45,96 +45,89 @@ export function QRCodePage() {
   };
 
   return (
-    <div className="flex-1 w-full max-w-5xl overflow-y-auto p-8 mx-auto">
-      <div className="mb-10">
-        <h1 className="text-[28px] font-light tracking-wide text-white mb-2">
+    <div className="flex-1 w-full max-w-4xl overflow-hidden p-6 mx-auto flex flex-col">
+      <div className="mb-6">
+        <h1 className="text-[24px] font-light tracking-wide text-white mb-0.5">
           Quick Connect
         </h1>
-        <p className="text-sm text-white/50">
-          Scan this QR code from your mobile app to connect instantly
+        <p className="text-xs text-white/40">
+          Scan to connect instantly
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* QR Code Display */}
-        <GlassPanel className="flex flex-col items-center justify-center p-12 rounded-2xl border-white/5">
+      <div className="flex gap-6 items-start">
+        {/* Left: QR Code */}
+        <GlassPanel className="flex-shrink-0 flex items-center justify-center p-6 rounded-xl border-white/5">
           {loading ? (
-            <div className="flex flex-col items-center gap-4">
+            <div className="w-[200px] h-[200px] flex flex-col items-center justify-center gap-2">
               <div className="animate-spin">
-                <Icon name="refresh" className="text-[48px] text-white/40" />
+                <Icon name="refresh" className="text-[32px] text-white/30" />
               </div>
-              <p className="text-sm text-white/40">Generating QR code...</p>
+              <p className="text-[10px] text-white/30">Generating...</p>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-6">
-              <div className="p-4 bg-white rounded-xl shadow-lg">
+            <div className="flex flex-col items-center gap-3">
+              <div className="p-2 bg-white rounded-lg">
                 <img
                   src={qrCodeUrl}
-                  alt="QR Code for connection"
-                  className="w-[300px] h-[300px]"
+                  alt="QR Code"
+                  className="w-[200px] h-[200px]"
                 />
               </div>
-              <div className="flex items-center gap-2 text-white/60">
-                <Icon name="qr_code_scanner" className="text-[20px]" />
-                <span className="text-sm">Scan with OmniControl mobile app</span>
+              <div className="flex items-center gap-1.5 text-white/30">
+                <Icon name="qr_code_scanner" className="text-[14px]" />
+                <span className="text-[10px]">Scan with mobile</span>
               </div>
             </div>
           )}
         </GlassPanel>
 
-        {/* Connection Details */}
-        <div className="flex flex-col gap-6">
-          <GlassPanel className="flex flex-col gap-4 p-6 rounded-2xl border-white/5">
-            <div className="flex items-center gap-3 mb-2">
-              <Icon name="info" className="text-[24px] text-blue-400" />
-              <h2 className="text-lg font-medium text-white">Connection Info</h2>
-            </div>
+        {/* Right: Connection Info */}
+        <div className="flex-1 flex flex-col gap-3">
+          <GlassPanel className="p-4 rounded-xl border-white/5">
+            <h2 className="text-[11px] font-medium text-white/50 uppercase tracking-wider mb-3">
+              Connection Details
+            </h2>
             
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-1 block">
-                  Server IP Address
-                </label>
-                <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-lg border border-white/10">
-                  <Icon name="router" className="text-[20px] text-white/40" />
-                  <span className="font-mono text-sm text-white/80">{serverIp}</span>
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-2">
+                <Icon name="router" className="text-[14px] text-white/30 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
+                    IP Address
+                  </label>
+                  <span className="font-mono text-xs text-white/70 block">{serverIp}</span>
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-1 block">
-                  Port
-                </label>
-                <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-lg border border-white/10">
-                  <Icon name="settings_ethernet" className="text-[20px] text-white/40" />
-                  <span className="font-mono text-sm text-white/80">{serverPort}</span>
+              <div className="flex items-center gap-2">
+                <Icon name="settings_ethernet" className="text-[14px] text-white/30 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
+                    Port
+                  </label>
+                  <span className="font-mono text-xs text-white/70 block">{serverPort}</span>
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-1 block">
-                  PIN
-                </label>
-                <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-lg border border-white/10">
-                  <Icon name="lock" className="text-[20px] text-white/40" />
-                  <span className="font-mono text-lg text-white/80 tracking-widest">{pin}</span>
+              <div className="flex items-center gap-2">
+                <Icon name="lock" className="text-[14px] text-white/30 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="text-[9px] text-white/25 uppercase tracking-wider block mb-0.5">
+                    PIN
+                  </label>
+                  <span className="font-mono text-sm text-white/70 tracking-widest block">{pin}</span>
                 </div>
               </div>
             </div>
           </GlassPanel>
 
-          <GlassPanel className="flex flex-col gap-3 p-6 rounded-2xl border-white/5 bg-blue-500/5">
-            <div className="flex items-start gap-3">
-              <Icon name="lightbulb" className="text-[24px] text-yellow-400 mt-0.5" />
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-white mb-2">How to use</h3>
-                <ol className="text-xs text-white/60 space-y-2 list-decimal list-inside">
-                  <li>Open OmniControl app on your mobile device</li>
-                  <li>When connection fails, tap "Scan QR Code"</li>
-                  <li>Point camera at the QR code above</li>
-                  <li>App will connect automatically</li>
-                </ol>
-              </div>
+          <GlassPanel className="p-3 rounded-xl border-white/5 bg-blue-500/5">
+            <div className="flex items-start gap-2">
+              <Icon name="info" className="text-[14px] text-blue-400/50 mt-0.5 flex-shrink-0" />
+              <p className="text-[10px] text-white/40 leading-relaxed">
+                Open mobile app, tap <span className="text-white/60">"Scan QR Code"</span> when connection fails
+              </p>
             </div>
           </GlassPanel>
         </div>
