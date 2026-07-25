@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { GlassPanel } from "../../UI/GlassPanel";
 import { Icon } from "../../UI/Icon";
+import Logo from "../../../public/img/logo.png";
 
 export function QRCodePage() {
   const [qrData, setQrData] = useState<string>("");
@@ -69,6 +70,12 @@ export function QRCodePage() {
                 level="H"
                 bgColor="transparent"
                 fgColor="#e2e2e4"
+                imageSettings={{
+                  src: Logo,
+                  height: 36,
+                  width: 36,
+                  excavate: true,
+                }}
               />
               <div className="flex items-center gap-1.5 text-white/30">
                 <Icon name="qr_code_scanner" className="text-[14px]" />
