@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { socketService } from "../lib/socket";
+import { DiscoveryService } from "../services/discovery-service";
+import { StorageService } from "../services/storage-service";
 import Constants from "expo-constants";
 
 interface PcInfo {
@@ -16,10 +18,16 @@ interface PcInfo {
 interface ConnectionContextType {
   isConnected: boolean;
   isAuthenticated: boolean;
+  isDiscovering: boolean;
   error: string | null;
   pcInfo: PcInfo | null;
-  connect: (serverUrl: string, pin: string) => Promise<void>;
+  serverIp: string;
+  serverPin: string;
+  showConnectionModal: boolean;
+  connect: (ip: string, pin: string) => Promise<void>;
   disconnect: () => void;
+  retryConnection: () => Promise<void>;
+  closeConnectionModal: () => void;
 }
 
 const ConnectionContext = createContext<ConnectionContextType | undefined>(undefined);
@@ -27,47 +35,85 @@ const ConnectionContext = createContext<ConnectionContextType | undefined>(undef
 export function ConnectionProvider({ children }: { children: ReactNode }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDiscovering, setIsDiscovering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pcInfo, setPcInfo] = useState<PcInfo | null>(null);
-  const [serverUrl, setServerUrl] = useState<string | null>(null);
+  const [serverIp, setServerIp] = useState("192.168.0.103");
+  const [serverPin, setServerPin] = useState("4812");
+  const [showConnectionModal, setShowConnectionModal] = useState(false);
 
-  // Auto-connect on mount
+  // Auto-discover and connect on mount
   useEffect(() => {
-    const url = "http://192.168.0.103:4321"; // TODO: Make this configurable
-    const pin = "4812";
-
-    console.log("[ConnectionProvider] Auto-connecting to server...");
-    connect(url, pin);
+    autoConnectFlow();
 
     return () => {
-      console.log("[ConnectionProvider] Cleaning up, disconnecting...");
       disconnect();
     };
   }, []);
 
-  // Fetch PC info after authentication
+  const autoConnectFlow = async () => {
+    try {
+      // 1. Try to load saved config
+      const savedConfig = await StorageService.loadServerConfig();
+      
+      if (savedConfig && savedConfig.autoConnect) {
+        console.log('[Connection] Using saved config');
+        setServerIp(savedConfig.ip);
+        setServerPin(savedConfig.pin);
+        
+        // Verify saved server is still available
+        const isAvailable = await DiscoveryService.verifyServer(savedConfig.ip, savedConfig.port);
+        if (isAvailable) {
+          await connect(savedConfig.ip, savedConfig.pin);
+          return;
+        } else {
+          console.log('[Connection] Saved server not available, discovering...');
+        }
+      }
+
+      // 2. No saved config or server not available - discover
+      setIsDiscovering(true);
+      const discovered = await DiscoveryService.discover();
+      setIsDiscovering(false);
+
+      if (discovered) {
+        console.log('[Connection] Server discovered:', discovered.ip);
+        setServerIp(discovered.ip);
+        await connect(discovered.ip, serverPin);
+      } else {
+        // 3. Discovery failed - show modal
+        console.log('[Connection] Discovery failed, showing modal');
+        setShowConnectionModal(true);
+      }
+    } catch (err) {
+      setIsDiscovering(false);
+      console.error('[Connection] Auto-connect flow error:', err);
+      setShowConnectionModal(true);
+    }
+  };
+
   const fetchPcInfo = async (url: string) => {
     try {
       const response = await fetch(`${url}/api/v1/pc-info`);
       if (response.ok) {
         const data = await response.json();
         setPcInfo(data);
-        console.log("[ConnectionProvider] PC info fetched:", data);
+        console.log('[Connection] PC info fetched:', data);
       }
     } catch (err) {
-      console.error("[ConnectionProvider] Failed to fetch PC info:", err);
+      console.error('[Connection] Failed to fetch PC info:', err);
     }
   };
 
-  const connect = async (url: string, pin: string) => {
+  const connect = async (ip: string, pin: string) => {
     try {
-      console.log("[ConnectionProvider] Connecting to:", url);
+      console.log('[Connection] Connecting to:', ip);
       setError(null);
-      setServerUrl(url);
       
+      const url = `http://${ip}:4321`;
       await socketService.connect(url);
       setIsConnected(true);
-      console.log("[ConnectionProvider] Connected successfully");
+      console.log('[Connection] Connected successfully');
 
       // Identify device
       const deviceId = Constants.sessionId || `mobile-${Date.now()}`;
@@ -78,23 +124,40 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
         pin,
       });
 
-      console.log("[ConnectionProvider] Identification result:", result);
+      console.log('[Connection] Identification result:', result);
       if (result.ok) {
         setIsAuthenticated(true);
-        console.log("[ConnectionProvider] Authenticated successfully");
+        console.log('[Connection] Authenticated successfully');
         
-        // Fetch PC info after successful authentication
+        // Save successful config
+        await StorageService.saveServerConfig({
+          ip,
+          port: 4321,
+          pin,
+          autoConnect: true,
+        });
+
+        // Fetch PC info
         await fetchPcInfo(url);
+
+        // Close modal if open
+        setShowConnectionModal(false);
       } else {
         setError(result.error || "Authentication failed");
         socketService.disconnect();
         setIsConnected(false);
+        setShowConnectionModal(true);
       }
     } catch (err) {
-      console.error("[ConnectionProvider] Connection error:", err);
+      console.error('[Connection] Connection error:', err);
       setError(err instanceof Error ? err.message : "Connection failed");
       setIsConnected(false);
+      setShowConnectionModal(true);
     }
+  };
+
+  const retryConnection = async () => {
+    await connect(serverIp, serverPin);
   };
 
   const disconnect = () => {
@@ -102,7 +165,10 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
     setIsConnected(false);
     setIsAuthenticated(false);
     setPcInfo(null);
-    setServerUrl(null);
+  };
+
+  const closeConnectionModal = () => {
+    setShowConnectionModal(false);
   };
 
   return (
@@ -110,10 +176,16 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
       value={{
         isConnected,
         isAuthenticated,
+        isDiscovering,
         error,
         pcInfo,
+        serverIp,
+        serverPin,
+        showConnectionModal,
         connect,
         disconnect,
+        retryConnection,
+        closeConnectionModal,
       }}
     >
       {children}

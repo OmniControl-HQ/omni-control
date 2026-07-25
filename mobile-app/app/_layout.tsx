@@ -1,21 +1,21 @@
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
 import {
   Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-  useFonts,
 } from "@expo-google-fonts/inter";
-import { Stack } from "expo-router";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ConnectionProvider } from "../src/contexts/ConnectionContext";
+import { ConnectionModal } from "../src/components/modals/ConnectionModal";
 import {
+  SafeAreaContext,
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { colors } from "../src/theme/tokens";
-import { ConnectionProvider } from "../src/contexts/ConnectionContext";
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
+  const [loaded, error] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
@@ -24,12 +24,8 @@ export default function RootLayout() {
 
   const insets = useSafeAreaInsets();
 
-  if (!fontsLoaded) {
-    return (
-      <View style={styles.loader}>
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
+  if (!loaded && !error) {
+    return null;
   }
 
   return (
@@ -43,16 +39,8 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
         </Stack>
+        <ConnectionModal />
       </SafeAreaProvider>
     </ConnectionProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  loader: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.background,
-  },
-});
