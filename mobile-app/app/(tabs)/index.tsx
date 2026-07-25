@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { GreetingSection } from "../../src/components/dashboard/GreetingSection";
 import { PcStatusCard } from "../../src/components/dashboard/PcStatusCard";
 import { PerformanceSection } from "../../src/components/dashboard/PerformanceSection";

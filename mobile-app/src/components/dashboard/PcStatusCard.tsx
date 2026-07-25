@@ -5,7 +5,8 @@ import { colors, spacing, typography } from "../../theme/tokens";
 import { useConnection } from "../../contexts/ConnectionContext";
 
 export function PcStatusCard() {
-  const { isConnected, isAuthenticated, error, serverInfo } = useConnection();
+  const { isConnected, isAuthenticated, error, pcInfo } = useConnection();
+
   return (
     <GlassPanel style={styles.connectionCard}>
       <View style={styles.connectionHeader}>
@@ -27,19 +28,31 @@ export function PcStatusCard() {
         </Text>
       </View>
 
-      {isAuthenticated && serverInfo && (
-        <View style={styles.serverInfo}>
+      {isAuthenticated && pcInfo && (
+        <View style={styles.pcInfo}>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Device:</Text>
-            <Text style={styles.infoValue}>{serverInfo.name}</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>IP:</Text>
-            <Text style={styles.infoValue}>{serverInfo.ip}</Text>
+            <Text style={styles.infoLabel}>PC Name:</Text>
+            <Text style={styles.infoValue}>{pcInfo.name}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Platform:</Text>
-            <Text style={styles.infoValue}>{serverInfo.platform}</Text>
+            <Text style={styles.infoValue}>
+              {pcInfo.platform === "win32"
+                ? "Windows"
+                : pcInfo.platform === "darwin"
+                  ? "macOS"
+                  : pcInfo.platform}
+            </Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>CPU Cores:</Text>
+            <Text style={styles.infoValue}>{pcInfo.cpuCount}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Memory:</Text>
+            <Text style={styles.infoValue}>
+              {Math.round(pcInfo.totalMemory / 1024 / 1024 / 1024)} GB
+            </Text>
           </View>
         </View>
       )}
@@ -63,7 +76,7 @@ const styles = StyleSheet.create({
     ...typography.headlineSm,
     color: colors.onSurface,
   },
-  serverInfo: {
+  pcInfo: {
     gap: 8,
   },
   infoRow: {

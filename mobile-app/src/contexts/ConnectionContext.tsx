@@ -2,11 +2,22 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { socketService } from "../lib/socket";
 import Constants from "expo-constants";
 
+interface PcInfo {
+  name: string;
+  platform: string;
+  type: string;
+  arch: string;
+  totalMemory: number;
+  freeMemory: number;
+  cpuCount: number;
+  uptime: number;
+}
+
 interface ConnectionContextType {
   isConnected: boolean;
   isAuthenticated: boolean;
   error: string | null;
-  serverInfo: any | null;
+  pcInfo: PcInfo | null;
   connect: (serverUrl: string, pin: string) => Promise<void>;
   disconnect: () => void;
 }
@@ -17,15 +28,16 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [serverInfo, setServerInfo] = useState<any | null>(null);
+  const [pcInfo, setPcInfo] = useState<PcInfo | null>(null);
+  const [serverUrl, setServerUrl] = useState<string | null>(null);
 
   // Auto-connect on mount
   useEffect(() => {
-    const serverUrl = "http://192.168.0.103:4321"; // TODO: Make this configurable
+    const url = "http://192.168.0.103:4321"; // TODO: Make this configurable
     const pin = "4812";
 
     console.log("[ConnectionProvider] Auto-connecting to server...");
-    connect(serverUrl, pin);
+    connect(url, pin);
 
     return () => {
       console.log("[ConnectionProvider] Cleaning up, disconnecting...");
@@ -33,12 +45,27 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const connect = async (serverUrl: string, pin: string) => {
+  // Fetch PC info after authentication
+  const fetchPcInfo = async (url: string) => {
     try {
-      console.log("[ConnectionProvider] Connecting to:", serverUrl);
+      const response = await fetch(`${url}/api/v1/pc-info`);
+      if (response.ok) {
+        const data = await response.json();
+        setPcInfo(data);
+        console.log("[ConnectionProvider] PC info fetched:", data);
+      }
+    } catch (err) {
+      console.error("[ConnectionProvider] Failed to fetch PC info:", err);
+    }
+  };
+
+  const connect = async (url: string, pin: string) => {
+    try {
+      console.log("[ConnectionProvider] Connecting to:", url);
       setError(null);
+      setServerUrl(url);
       
-      await socketService.connect(serverUrl);
+      await socketService.connect(url);
       setIsConnected(true);
       console.log("[ConnectionProvider] Connected successfully");
 
@@ -54,8 +81,10 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
       console.log("[ConnectionProvider] Identification result:", result);
       if (result.ok) {
         setIsAuthenticated(true);
-        setServerInfo(result.device);
         console.log("[ConnectionProvider] Authenticated successfully");
+        
+        // Fetch PC info after successful authentication
+        await fetchPcInfo(url);
       } else {
         setError(result.error || "Authentication failed");
         socketService.disconnect();
@@ -72,7 +101,8 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
     socketService.disconnect();
     setIsConnected(false);
     setIsAuthenticated(false);
-    setServerInfo(null);
+    setPcInfo(null);
+    setServerUrl(null);
   };
 
   return (
@@ -81,7 +111,7 @@ export function ConnectionProvider({ children }: { children: ReactNode }) {
         isConnected,
         isAuthenticated,
         error,
-        serverInfo,
+        pcInfo,
         connect,
         disconnect,
       }}

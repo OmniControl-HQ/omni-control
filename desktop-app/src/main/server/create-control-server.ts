@@ -8,6 +8,7 @@ import { registerLogRoutes } from "./routes/logs";
 import { registerSecurityRoutes } from "./routes/security";
 import { registerServerRoutes } from "./routes/server";
 import { registerSettingsRoutes } from "./routes/settings";
+import { registerPcInfoRoutes } from "./routes/pc-info";
 import { ActivityLogService } from "./services/activity-log-service";
 import { ControlService } from "./services/control-service";
 import { DeviceRegistry } from "./services/device-registry";
@@ -40,6 +41,7 @@ export function createControlServer() {
   server.register(registerSettingsRoutes, settingsService);
   server.register(registerSecurityRoutes, securityService);
   server.register(registerLogRoutes, activityLogService);
+  server.register(registerPcInfoRoutes);
   registerSocketGateway(io, deviceRegistry, activityLogService, securityService, controlService);
 
   return {
