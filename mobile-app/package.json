@@ -7,7 +7,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "clear": "expo start --clear"
+    "clear": "expo start --clear",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -34,8 +36,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@eslint/js": "^10.0.1",
     "@types/react": "~19.2.4",
-    "typescript": "~6.0.3"
+    "eslint": "^10.8.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.7.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.65.0"
   },
   "private": true
 }
