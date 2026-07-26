@@ -21,11 +21,11 @@ export function createControlServer() {
   const server = Fastify({ logger: true });
   const io = new Server(server.server, {
     cors: { origin: false },
-    perMessageDeflate: false, // Disable compression for lower latency
+    perMessageDeflate: false,
     httpCompression: false,
     pingInterval: 25000,
     pingTimeout: 5000,
-    transports: ["websocket", "polling"], // Prefer WebSocket
+    transports: ["websocket", "polling"],
   });
   const deviceRegistry = new DeviceRegistry();
   const dashboardService = new DashboardService(deviceRegistry);
@@ -42,13 +42,25 @@ export function createControlServer() {
   server.register(registerSecurityRoutes, securityService);
   server.register(registerLogRoutes, activityLogService);
   server.register(registerPcInfoRoutes);
-  registerSocketGateway(io, deviceRegistry, activityLogService, securityService, controlService);
+  registerSocketGateway(
+    io,
+    deviceRegistry,
+    activityLogService,
+    securityService,
+    controlService,
+  );
 
   return {
     async start() {
       await server.listen({ host: serverConfig.host, port: serverConfig.port });
-      activityLogService.record({ level: "info", category: "server", message: "Server started." });
-      server.log.info(`OmniControl server listening on ${serverConfig.host}:${serverConfig.port}`);
+      activityLogService.record({
+        level: "info",
+        category: "server",
+        message: "Server started.",
+      });
+      server.log.info(
+        `OmniControl server listening on ${serverConfig.host}:${serverConfig.port}`,
+      );
     },
     async stop() {
       await io.close();
@@ -73,7 +85,10 @@ export function createControlServer() {
       return settingsService.reset();
     },
     getSecurity() {
-      return { ...securityService.getSettings(), pin: securityService.getPin() };
+      return {
+        ...securityService.getSettings(),
+        pin: securityService.getPin(),
+      };
     },
     updateRequirePin(requirePin: boolean) {
       return securityService.updateRequirePin(requirePin);

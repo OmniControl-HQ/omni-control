@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { TopAppBar } from "../../src/components/layout/TopAppBar";
 import { GlassButton } from "../../src/components/ui/GlassButton";
@@ -10,12 +10,17 @@ import { useConnection } from "../../src/contexts/ConnectionContext";
 export default function MouseScreen() {
   const [isTouching, setIsTouching] = useState(false);
   const { isAuthenticated } = useConnection();
-  const { sendMouseClick, sendScroll, createTrackpadResponder } = useMouseControl({
-    sensitivity: 1.5,
-    scrollSensitivity: 10,
-  });
 
-  const trackpadResponder = useRef(createTrackpadResponder()).current;
+  const { sendMouseClick, sendScroll, createTrackpadResponder } =
+    useMouseControl({
+      sensitivity: 1.5,
+      scrollSensitivity: 10,
+    });
+
+  const trackpadResponder = useMemo(
+    () => createTrackpadResponder(setIsTouching),
+    [createTrackpadResponder],
+  );
 
   return (
     <View style={styles.screen}>
@@ -28,8 +33,6 @@ export default function MouseScreen() {
             isTouching && styles.trackpadActive,
             !isAuthenticated && styles.trackpadDisabled,
           ]}
-          onTouchStart={() => setIsTouching(true)}
-          onTouchEnd={() => setIsTouching(false)}
         >
           {!isTouching && (
             <View style={styles.trackpadIndicator}>

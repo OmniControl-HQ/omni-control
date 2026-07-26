@@ -1,5 +1,10 @@
 import * as robot from "@hurdlegroup/robotjs";
-import { MediaCommand, PointerClickCommand, PointerMoveCommand, PointerScrollCommand } from "../types";
+import {
+  MediaCommand,
+  PointerClickCommand,
+  PointerMoveCommand,
+  PointerScrollCommand,
+} from "../types";
 
 const mediaKeyByAction = {
   "play-pause": "audio_play",
@@ -15,73 +20,65 @@ function isFiniteNumber(value: unknown): value is number {
 }
 
 export class ControlService {
-  private mouseX = 0;
-  private mouseY = 0;
-  private moveQueue = { dx: 0, dy: 0 };
-  private moveTimeout: NodeJS.Timeout | null = null;
-  private lastSyncTime = 0;
-  private readonly SYNC_INTERVAL = 3000;
-  private readonly BATCH_INTERVAL = 8; // Back to 120fps for smoothness
+  private targetDx = 0;
+  private targetDy = 0;
+  private remainderX = 0;
+  private remainderY = 0;
+  private loopTimer: NodeJS.Timeout | null = null;
+
+  private readonly TICK_INTERVAL = 8;
+  private readonly LERP_FACTOR = 0.4;
 
   constructor() {
     robot.setMouseDelay(0);
     robot.setKeyboardDelay(0);
-    this.syncMousePosition();
   }
 
-  private syncMousePosition(): void {
-    try {
-      const position = robot.getMousePos();
-      this.mouseX = position.x;
-      this.mouseY = position.y;
-      this.lastSyncTime = Date.now();
-    } catch (error) {
-      // Ignore sync errors
-    }
-  }
+  private startLoop(): void {
+    if (this.loopTimer) return;
 
-  private processMoveQueue(): void {
-    if (this.moveQueue.dx === 0 && this.moveQueue.dy === 0) {
-      this.moveTimeout = null;
-      return;
-    }
+    this.loopTimer = setInterval(() => {
+      if (Math.abs(this.targetDx) < 0.01 && Math.abs(this.targetDy) < 0.01) {
+        this.targetDx = 0;
+        this.targetDy = 0;
+        if (this.loopTimer) {
+          clearInterval(this.loopTimer);
+          this.loopTimer = null;
+        }
+        return;
+      }
 
-    // Sync periodically to prevent drift
-    if (Date.now() - this.lastSyncTime > this.SYNC_INTERVAL) {
-      this.syncMousePosition();
-    }
+      const stepX = this.targetDx * this.LERP_FACTOR;
+      const stepY = this.targetDy * this.LERP_FACTOR;
 
-    // Update local position - no smoothing for real mouse feel
-    this.mouseX += this.moveQueue.dx;
-    this.mouseY += this.moveQueue.dy;
+      this.targetDx -= stepX;
+      this.targetDy -= stepY;
 
-    // Clamp to screen bounds
-    this.mouseX = Math.max(0, this.mouseX);
-    this.mouseY = Math.max(0, this.mouseY);
+      const totalX = stepX + this.remainderX;
+      const totalY = stepY + this.remainderY;
 
-    // Execute move
-    try {
-      robot.moveMouse(Math.round(this.mouseX), Math.round(this.mouseY));
-    } catch (error) {
-      this.syncMousePosition();
-    }
+      const moveX = Math.trunc(totalX);
+      const moveY = Math.trunc(totalY);
 
-    // Reset queue
-    this.moveQueue = { dx: 0, dy: 0 };
-    this.moveTimeout = null;
+      this.remainderX = totalX - moveX;
+      this.remainderY = totalY - moveY;
+
+      if (moveX !== 0 || moveY !== 0) {
+        try {
+          const pos = robot.getMousePos();
+          robot.moveMouse(pos.x + moveX, pos.y + moveY);
+        } catch (error) {}
+      }
+    }, this.TICK_INTERVAL);
   }
 
   movePointer(command: PointerMoveCommand): void {
     this.validatePointerMove(command);
 
-    // Accumulate movements
-    this.moveQueue.dx += command.dx;
-    this.moveQueue.dy += command.dy;
+    this.targetDx += command.dx;
+    this.targetDy += command.dy;
 
-    // Schedule batch processing if not already scheduled
-    if (!this.moveTimeout) {
-      this.moveTimeout = setTimeout(() => this.processMoveQueue(), this.BATCH_INTERVAL);
-    }
+    this.startLoop();
   }
 
   validatePointerMove(command: PointerMoveCommand): void {
