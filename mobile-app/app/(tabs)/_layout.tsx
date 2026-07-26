@@ -33,20 +33,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="media"
+        options={{
+          title: "Media",
+          tabBarIcon: ({ color }) => (
+            <Icon name="play-circle" size={24} color={color as string} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="keys"
         options={{
           title: "Keys",
           tabBarIcon: ({ color }) => (
             <Icon name="keyboard" size={24} color={color as string} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "Sets",
-          tabBarIcon: ({ color }) => (
-            <Icon name="settings" size={24} color={color as string} />
           ),
         }}
       />
