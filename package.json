@@ -6,6 +6,8 @@
     "desktop:dev": "pnpm --filter omnicontrol-desktop dev",
     "desktop:build": "pnpm --filter omnicontrol-desktop build",
     "desktop:start": "pnpm --filter omnicontrol-desktop start",
+    "desktop:lint": "pnpm --filter omnicontrol-desktop lint",
+    "desktop:lint:fix": "pnpm --filter omnicontrol-desktop lint:fix",
     "mobile:start": "pnpm --filter omnicontrol-mobile start",
     "web:dev": "pnpm --filter omnicontrol-web dev",
     "web:build": "pnpm --filter omnicontrol-web build",

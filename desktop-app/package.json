@@ -7,7 +7,9 @@
     "dev": "electron-vite dev --watch",
     "build": "electron-vite build",
     "start": "electron-vite preview",
-    "postinstall": "node scripts/ensure-electron.js"
+    "postinstall": "node scripts/ensure-electron.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@hurdlegroup/robotjs": "^0.12.3",
@@ -22,13 +24,17 @@
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^2.0.0",
+    "@eslint/js": "^10.0.1",
     "@types/node": "^20.14.9",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.3.0",
     "electron": "^31.0.0",
     "electron-vite": "^2.3.0",
+    "eslint": "^9.39.5",
+    "globals": "^17.7.0",
     "typescript": "^5.4.5",
+    "typescript-eslint": "^8.65.0",
     "vite": "^5.3.1"
   }
 }
