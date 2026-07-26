@@ -188,12 +188,12 @@ const styles = StyleSheet.create({
   playPauseButton: {
     width: 96,
     height: 96,
-    backgroundColor: colors.primaryContainer,
+    backgroundColor: colors.surfaceContainer,
     borderRadius: radii.full,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: colors.primary,
+    borderColor: "rgba(255, 255, 255, 0.1)",
   },
   buttonDisabled: {
     opacity: 0.3,
