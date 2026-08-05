@@ -99,7 +99,9 @@
       ],
       "license": false,
       "warningsAsErrors": false,
-      "artifactName": "${productName}-${version}-${arch}-Setup.${ext}"
+      "artifactName": "${productName}-${version}-${arch}-Setup.${ext}",
+      "installerHeaderIcon": "build/icon.png",
+      "include": "build/installer.nsh"
     },
     "portable": {
       "artifactName": "${productName}-${version}-${arch}-Portable.${ext}"

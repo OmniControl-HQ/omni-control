@@ -11,11 +11,28 @@ export function DashboardLayout() {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const glowRef = React.useRef<HTMLCanvasElement | null>(null);
   const [shadowOffset, setShadowOffset] = React.useState({ x: 0, y: 0 });
+  const [serverIp, setServerIp] = React.useState("Loading...");
   const navigate = useNavigate();
   const location = useLocation();
   const activeKey = getActiveKeyFromPathname(location.pathname);
 
   useGlowTexture(glowRef);
+
+  React.useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        const snapshot = await window.electron.dashboard.getSnapshot();
+        setServerIp(snapshot.serverIp || "localhost");
+      } catch (error) {
+        console.error("Failed to fetch server IP:", error);
+        setServerIp("localhost");
+      }
+    };
+
+    fetchIp();
+    const interval = setInterval(fetchIp, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="text-[#e2e2e4] text-[16px] leading-6 font-normal h-full w-full overflow-hidden flex items-center justify-center">
@@ -55,7 +72,7 @@ export function DashboardLayout() {
         />
 
         <main className="flex-1 flex flex-col relative z-0 h-full overflow-hidden bg-transparent">
-          <TopAppBar online ip="192.168.1.145" />
+          <TopAppBar online ip={serverIp} />
           <PanelFadeOutlet />
         </main>
       </div>
