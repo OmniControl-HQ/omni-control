@@ -118,7 +118,6 @@
     "dmg": {
       "title": "${productName} ${version}",
       "icon": "build/icon.icns",
-      "background": "build/dmg-background.png",
       "window": {
         "width": 540,
         "height": 380
@@ -143,6 +142,9 @@
       ],
       "icon": "build/icon.png",
       "category": "Utility",
+      "desktopName": "omnicontrol-desktop.desktop",
+      "syncDesktopName": true,
+      "maintainer": "Abdullah Al Mridul <rim89987@gmail.com>",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     }
   }
