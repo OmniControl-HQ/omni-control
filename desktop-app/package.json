@@ -142,9 +142,6 @@
       ],
       "icon": "build/icon.png",
       "category": "Utility",
-      "desktopName": "omnicontrol-desktop.desktop",
-      "syncDesktopName": true,
-      "maintainer": "Abdullah Al Mridul <rim89987@gmail.com>",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     }
   }
