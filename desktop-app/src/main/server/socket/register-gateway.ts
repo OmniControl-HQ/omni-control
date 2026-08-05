@@ -3,7 +3,7 @@ import { DeviceRegistry } from "../services/device-registry";
 import { ActivityLogService } from "../services/activity-log-service";
 import { ControlService } from "../services/control-service";
 import { SecurityService } from "../services/security-service";
-import { ControlResult, DeviceIdentification, MediaCommand, PointerClickCommand, PointerMoveCommand, PointerScrollCommand, SocketAcknowledgement } from "../types";
+import { ControlResult, DeviceIdentification, MediaCommand, PointerClickCommand, PointerMoveCommand, PointerScrollCommand, KeyboardTextCommand, KeyboardKeyCommand, KeyboardShortcutCommand, SocketAcknowledgement } from "../types";
 
 type IdentificationResponse =
   | { ok: true; device: ReturnType<DeviceRegistry["upsert"]> }
@@ -122,6 +122,29 @@ export function registerSocketGateway(
       respond(acknowledge, () => {
         controlService.media(payload);
         activityLogService.record({ level: "info", category: "control", message: `Media action ${payload.action} received.` });
+      });
+    });
+
+    socket.on("control:keyboard:text", (payload: KeyboardTextCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
+      respond(acknowledge, () => {
+        controlService.typeText(payload);
+        const preview = payload.text.length > 50 ? payload.text.substring(0, 50) + "..." : payload.text;
+        activityLogService.record({ level: "info", category: "control", message: `Text input: "${preview}"` });
+      });
+    });
+
+    socket.on("control:keyboard:key", (payload: KeyboardKeyCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
+      respond(acknowledge, () => {
+        controlService.pressKey(payload);
+        const modStr = payload.modifiers && payload.modifiers.length > 0 ? payload.modifiers.join("+") + "+" : "";
+        activityLogService.record({ level: "info", category: "control", message: `Key press: ${modStr}${payload.key}` });
+      });
+    });
+
+    socket.on("control:keyboard:shortcut", (payload: KeyboardShortcutCommand, acknowledge?: SocketAcknowledgement<ControlResult>) => {
+      respond(acknowledge, () => {
+        controlService.executeShortcut(payload);
+        activityLogService.record({ level: "info", category: "control", message: `Shortcut: ${payload.shortcut}` });
       });
     });
 

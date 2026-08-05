@@ -19,6 +19,19 @@ interface MediaCommand {
   action: "play-pause" | "next" | "previous" | "volume-up" | "volume-down" | "mute";
 }
 
+interface KeyboardTextCommand {
+  text: string;
+}
+
+interface KeyboardKeyCommand {
+  key: string;
+  modifiers?: string[];
+}
+
+interface KeyboardShortcutCommand {
+  shortcut: "copy" | "paste" | "cut" | "selectAll" | "undo" | "redo" | "save" | "find" | "refresh" | "enter" | "backspace" | "delete" | "escape" | "tab" | "space";
+}
+
 interface DeviceIdentification {
   id: string;
   name: string;
@@ -166,6 +179,58 @@ class SocketService {
       this.socket.emit(
         "control:media",
         { action } as MediaCommand,
+        (response: ControlResult) => {
+          resolve(response);
+        }
+      );
+    });
+  }
+
+  // Keyboard Control
+  sendKeyboardText(text: string): Promise<ControlResult> {
+    return new Promise((resolve) => {
+      if (!this.authenticated || !this.socket) {
+        resolve({ ok: false, error: "Not authenticated" });
+        return;
+      }
+
+      this.socket.emit(
+        "control:keyboard:text",
+        { text } as KeyboardTextCommand,
+        (response: ControlResult) => {
+          resolve(response);
+        }
+      );
+    });
+  }
+
+  sendKeyPress(key: string, modifiers?: string[]): Promise<ControlResult> {
+    return new Promise((resolve) => {
+      if (!this.authenticated || !this.socket) {
+        resolve({ ok: false, error: "Not authenticated" });
+        return;
+      }
+
+      this.socket.emit(
+        "control:keyboard:key",
+        { key, modifiers } as KeyboardKeyCommand,
+        (response: ControlResult) => {
+          resolve(response);
+        }
+      );
+    });
+  }
+
+  sendKeyboardShortcut(shortcut: KeyboardShortcutCommand["shortcut"]): Promise<ControlResult> {
+    return new Promise((resolve) => {
+      if (!this.authenticated || !this.socket) {
+        resolve({ ok: false, error: "Not authenticated" });
+        return;
+      }
+
+      this.socket.emit(
+        "control:keyboard:shortcut",
+        { shortcut } as KeyboardShortcutCommand,
         (response: ControlResult) => {
           resolve(response);
         }

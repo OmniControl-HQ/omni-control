@@ -4,6 +4,9 @@ import {
   PointerClickCommand,
   PointerMoveCommand,
   PointerScrollCommand,
+  KeyboardTextCommand,
+  KeyboardKeyCommand,
+  KeyboardShortcutCommand,
 } from "../types";
 
 const mediaKeyByAction = {
@@ -115,5 +118,109 @@ export class ControlService {
       throw new Error("Unsupported media action.");
     }
     robot.keyTap(mediaKeyByAction[command.action]);
+  }
+
+  // Keyboard Control Methods
+  typeText(command: KeyboardTextCommand): void {
+    if (!command || typeof command.text !== "string") {
+      throw new Error("Invalid text input command.");
+    }
+    if (command.text.length > 5000) {
+      throw new Error("Text input exceeds maximum length of 5000 characters.");
+    }
+    if (command.text.length === 0) {
+      return; // Nothing to type
+    }
+    
+    try {
+      robot.typeString(command.text);
+    } catch (error) {
+      throw new Error("Failed to type text. Some characters may not be supported.");
+    }
+  }
+
+  pressKey(command: KeyboardKeyCommand): void {
+    if (!command || typeof command.key !== "string" || !command.key.trim()) {
+      throw new Error("Invalid key press command.");
+    }
+
+    const modifiers = Array.isArray(command.modifiers) ? command.modifiers : [];
+    
+    // Validate modifiers
+    const validModifiers = ["shift", "control", "alt", "command"];
+    for (const mod of modifiers) {
+      if (!validModifiers.includes(mod.toLowerCase())) {
+        throw new Error(`Invalid modifier key: ${mod}`);
+      }
+    }
+
+    try {
+      robot.keyTap(command.key, modifiers);
+    } catch (error) {
+      throw new Error(`Failed to press key: ${command.key}`);
+    }
+  }
+
+  executeShortcut(command: KeyboardShortcutCommand): void {
+    if (!command || !command.shortcut) {
+      throw new Error("Invalid shortcut command.");
+    }
+
+    const platform = process.platform;
+    const ctrl = platform === "darwin" ? "command" : "control";
+
+    try {
+      switch (command.shortcut) {
+        case "copy":
+          robot.keyTap("c", [ctrl]);
+          break;
+        case "paste":
+          robot.keyTap("v", [ctrl]);
+          break;
+        case "cut":
+          robot.keyTap("x", [ctrl]);
+          break;
+        case "selectAll":
+          robot.keyTap("a", [ctrl]);
+          break;
+        case "undo":
+          robot.keyTap("z", [ctrl]);
+          break;
+        case "redo":
+          robot.keyTap("y", [ctrl]);
+          break;
+        case "save":
+          robot.keyTap("s", [ctrl]);
+          break;
+        case "find":
+          robot.keyTap("f", [ctrl]);
+          break;
+        case "refresh":
+          robot.keyTap("r", [ctrl]);
+          break;
+        case "enter":
+          robot.keyTap("enter");
+          break;
+        case "backspace":
+          robot.keyTap("backspace");
+          break;
+        case "delete":
+          robot.keyTap("delete");
+          break;
+        case "escape":
+          robot.keyTap("escape");
+          break;
+        case "tab":
+          robot.keyTap("tab");
+          break;
+        case "space":
+          robot.keyTap("space");
+          break;
+        default:
+          throw new Error(`Unsupported shortcut: ${command.shortcut}`);
+      }
+    } catch (error) {
+      throw new Error(`Failed to execute shortcut: ${command.shortcut}`);
+    }
   }
 }

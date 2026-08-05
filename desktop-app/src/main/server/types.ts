@@ -49,4 +49,9 @@ export type PointerMoveCommand = { dx: number; dy: number };
 export type PointerClickCommand = { button: "left" | "right" | "middle"; double?: boolean };
 export type PointerScrollCommand = { dx: number; dy: number };
 export type MediaCommand = { action: "play-pause" | "next" | "previous" | "volume-up" | "volume-down" | "mute" };
+export type KeyboardTextCommand = { text: string };
+export type KeyboardKeyCommand = { key: string; modifiers?: string[] };
+export type KeyboardShortcutCommand = { 
+  shortcut: "copy" | "paste" | "cut" | "selectAll" | "undo" | "redo" | "save" | "find" | "refresh" | "enter" | "backspace" | "delete" | "escape" | "tab" | "space" 
+};
 export type ControlResult = { ok: true } | { ok: false; error: string };
