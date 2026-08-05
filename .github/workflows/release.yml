@@ -67,13 +67,9 @@ jobs:
           npx electron-builder --linux --publish always
 
   build-mobile:
-    name: Build Mobile (${{ matrix.platform }})
+    name: Build Mobile (Android)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [android, ios]
+    timeout-minutes: 30
     
     steps:
       - name: Checkout code
@@ -89,79 +85,54 @@ jobs:
         with:
           version: 9
 
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build ${{ matrix.platform }}
-        run: |
-          cd mobile-app
-          eas build --platform ${{ matrix.platform }} --profile production --non-interactive --no-wait
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
 
-      - name: Wait for build completion
-        id: build-wait
+      - name: Prebuild Android
         run: |
           cd mobile-app
-          
-          BUILD_ID=$(eas build:list --platform ${{ matrix.platform }} --limit 1 --json | jq -r '.[0].id')
-          echo "build-id=$BUILD_ID" >> $GITHUB_OUTPUT
-          
-          echo "Waiting for build $BUILD_ID to complete..."
-          
-          MAX_WAIT=1800
-          ELAPSED=0
-          
-          while [ $ELAPSED -lt $MAX_WAIT ]; do
-            STATUS=$(eas build:view $BUILD_ID --json | jq -r '.status')
-            
-            if [ "$STATUS" = "finished" ]; then
-              echo "Build completed successfully!"
-              exit 0
-            elif [ "$STATUS" = "errored" ] || [ "$STATUS" = "canceled" ]; then
-              echo "Build failed with status: $STATUS"
-              exit 1
-            fi
-            
-            echo "Build status: $STATUS. Waiting... ($ELAPSED/$MAX_WAIT seconds)"
-            sleep 30
-            ELAPSED=$((ELAPSED + 30))
-          done
-          
-          echo "Build timed out after $MAX_WAIT seconds"
-          exit 1
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          npx expo prebuild --platform android --clean
 
-      - name: Download build artifact
+      - name: Build Android APK
+        run: |
+          cd mobile-app/android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Copy APK
         run: |
           cd mobile-app
-          BUILD_ID="${{ steps.build-wait.outputs.build-id }}"
+          APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
+          OUTPUT_APK="../OmniControl-${{ github.ref_name }}-android.apk"
           
-          ARTIFACT_URL=$(eas build:view $BUILD_ID --json | jq -r '.artifacts.buildUrl')
-          
-          if [ "${{ matrix.platform }}" = "android" ]; then
-            curl -L -o ../OmniControl-${{ github.ref_name }}-android.apk "$ARTIFACT_URL"
-            echo "Downloaded Android APK"
+          if [ -f "$APK_PATH" ]; then
+            cp "$APK_PATH" "$OUTPUT_APK"
+            ls -lh "$OUTPUT_APK"
+            echo "✅ APK created successfully!"
           else
-            curl -L -o ../OmniControl-${{ github.ref_name }}-ios.ipa "$ARTIFACT_URL"
-            echo "Downloaded iOS IPA"
+            echo "❌ APK not found at $APK_PATH"
+            find android/app/build/outputs -name "*.apk"
+            exit 1
           fi
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Upload to GitHub Release
+      - name: Upload Android APK to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            OmniControl-${{ github.ref_name }}-*.apk
-            OmniControl-${{ github.ref_name }}-*.ipa
+          files: OmniControl-${{ github.ref_name }}-android.apk
           draft: false
           prerelease: false
         env:
