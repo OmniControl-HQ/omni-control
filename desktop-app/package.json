@@ -109,7 +109,7 @@
         "dmg",
         "zip"
       ],
-      "icon": "build/icon.icns",
+      "icon": "build/icon.png",
       "category": "public.app-category.utilities",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
@@ -117,7 +117,6 @@
     },
     "dmg": {
       "title": "${productName} ${version}",
-      "icon": "build/icon.icns",
       "window": {
         "width": 540,
         "height": 380
