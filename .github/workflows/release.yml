@@ -3,16 +3,16 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   release:
     runs-on: ${{ matrix.os }}
-    
+    timeout-minutes: 15
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -46,7 +46,7 @@ jobs:
         run: |
           cd desktop-app
           pnpm run build
-        
+
       - name: Build and Publish (Windows)
         if: matrix.os == 'windows-latest'
         env:
