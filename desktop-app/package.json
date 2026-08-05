@@ -1,9 +1,9 @@
 {
   "name": "omnicontrol-desktop",
   "version": "1.0.0",
-  "description": "OmniControl - Remote PC Control Desktop Server",
-  "author": "OmniControl Team",
-  "homepage": "https://github.com/yourusername/omni-control",
+  "description": "Omni Control - Remote PC Control Desktop Server",
+  "author": "Omni Control Community",
+  "homepage": "https://github.com/OmniControl-HQ/omni-control",
   "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev --watch",
@@ -46,8 +46,8 @@
   },
   "build": {
     "appId": "com.omnicontrol.desktop",
-    "productName": "OmniControl",
-    "copyright": "Copyright © 2026 OmniControl Team",
+    "productName": "Omni Control",
+    "copyright": "Copyright © 2026 OmniControl Community",
     "npmRebuild": false,
     "buildDependenciesFromSource": false,
     "directories": {
@@ -65,22 +65,39 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
-      "icon": "build/icon.ico",
-      "artifactName": "${productName}-${version}-${arch}-Setup.${ext}"
+      "icon": "build/icon.png"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "OmniControl"
+      "shortcutName": "OmniControl",
+      "perMachine": true,
+      "runAfterFinish": true,
+      "menuCategory": true,
+      "displayLanguageSelector": false,
+      "installerLanguages": [
+        "en_US"
+      ],
+      "license": false,
+      "warningsAsErrors": false,
+      "artifactName": "${productName}-${version}-${arch}-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-${arch}-Portable.${ext}"
     },
     "mac": {
       "target": [
