@@ -44,7 +44,7 @@ export default function KeysScreen() {
     if (!isConnected || !textInput.trim()) return;
     const result = await sendText(textInput);
     if (result.ok) {
-      setTextInput(""); // Clear input on success
+      setTextInput("");
     }
   };
 
@@ -63,7 +63,6 @@ export default function KeysScreen() {
           </View>
         )}
 
-        {/* Text Input Section */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>Text Input</Text>
           <View style={styles.textInputContainer}>
@@ -88,7 +87,6 @@ export default function KeysScreen() {
           <Text style={styles.charCount}>{textInput.length} / 5000</Text>
         </View>
 
-        {/* Keyboard Shortcuts Section */}
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>Keyboard Shortcuts</Text>
           <View style={styles.shortcutsGrid}>

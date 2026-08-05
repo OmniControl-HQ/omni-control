@@ -120,7 +120,6 @@ export class ControlService {
     robot.keyTap(mediaKeyByAction[command.action]);
   }
 
-  // Keyboard Control Methods
   typeText(command: KeyboardTextCommand): void {
     if (!command || typeof command.text !== "string") {
       throw new Error("Invalid text input command.");
@@ -129,7 +128,7 @@ export class ControlService {
       throw new Error("Text input exceeds maximum length of 5000 characters.");
     }
     if (command.text.length === 0) {
-      return; // Nothing to type
+      return;
     }
     
     try {
@@ -146,7 +145,6 @@ export class ControlService {
 
     const modifiers = Array.isArray(command.modifiers) ? command.modifiers : [];
     
-    // Validate modifiers
     const validModifiers = ["shift", "control", "alt", "command"];
     for (const mod of modifiers) {
       if (!validModifiers.includes(mod.toLowerCase())) {

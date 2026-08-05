@@ -61,7 +61,7 @@ export function registerSocketGateway(
         controlService.validatePointerMove(payload);
         controlService.movePointer(payload);
       } catch (error) {
-        // Silent fail for invalid moves
+        
       }
     };
 
@@ -71,31 +71,22 @@ export function registerSocketGateway(
         payload: unknown,
         acknowledge?: SocketAcknowledgement<IdentificationResponse>,
       ) => {
-        console.log("[Gateway] Device identification received:", payload);
-        
         if (!isDeviceIdentification(payload)) {
-          console.error("[Gateway] Invalid device identity format");
           acknowledge?.({ ok: false, error: "Invalid device identity." });
           return;
         }
 
-        console.log("[Gateway] Verifying PIN...");
         if (!securityService.verifyPin(payload.pin)) {
-          console.error("[Gateway] PIN verification failed");
           activityLogService.record({ level: "warning", category: "security", message: `Rejected connection from ${socket.handshake.address}.` });
           acknowledge?.({ ok: false, error: "Invalid connection PIN." });
           return;
         }
 
-        console.log("[Gateway] PIN verified, registering device...");
         const { pin: _, ...identity } = payload;
         const device = deviceRegistry.upsert(identity, socket.handshake.address);
         socket.data.deviceId = device.id;
-        console.log("[Gateway] Device registered with ID:", device.id);
-        console.log("[Gateway] Sending acknowledgement:", { ok: true, device });
         activityLogService.record({ level: "info", category: "device", message: `${device.name} connected.` });
         acknowledge?.({ ok: true, device });
-        console.log("[Gateway] Acknowledgement sent");
         io.emit("devices:changed", { devices: deviceRegistry.list() });
       },
     );
@@ -114,7 +105,7 @@ export function registerSocketGateway(
       try {
         controlService.scrollPointer(payload);
       } catch (error) {
-        // Silent fail for invalid scrolls
+        
       }
     });
 

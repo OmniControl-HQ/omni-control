@@ -51,8 +51,6 @@ class SocketService {
 
   connect(serverUrl: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      console.log("[Socket] Creating connection to:", serverUrl);
-      
       this.socket = io(serverUrl, {
         transports: ["websocket", "polling"],
         reconnection: true,
@@ -63,24 +61,20 @@ class SocketService {
 
       this.socket.on("connect", () => {
         this.connected = true;
-        console.log("[Socket] Connected to server, waiting for server:ready...");
       });
 
       this.socket.on("server:ready", (data: { protocol: string }) => {
-        console.log("[Socket] Server ready event received, protocol:", data.protocol);
         resolve();
       });
 
       this.socket.on("connect_error", (error) => {
         this.connected = false;
-        console.error("[Socket] Connection error:", error.message);
         reject(error);
       });
 
       this.socket.on("disconnect", (reason) => {
         this.connected = false;
         this.authenticated = false;
-        console.log("[Socket] Disconnected from server, reason:", reason);
       });
 
       this.socket.on("error", (error) => {
@@ -106,43 +100,31 @@ class SocketService {
     return this.authenticated;
   }
 
-  // Device Identification
   identify(deviceInfo: DeviceIdentification): Promise<any> {
     return new Promise((resolve) => {
       if (!this.socket) {
-        console.log("[Socket] Cannot identify - no socket connection");
         resolve({ ok: false, error: "Not connected" });
         return;
       }
 
-      console.log("[Socket] Sending device identification:", deviceInfo);
-      
-      // Set timeout first
       const timeout = setTimeout(() => {
         if (!this.authenticated) {
-          console.error("[Socket] Authentication timeout - no response from server");
           resolve({ ok: false, error: "Authentication timeout" });
         }
       }, 5000);
 
       this.socket.emit("device:identify", deviceInfo, (response: any) => {
         clearTimeout(timeout);
-        console.log("[Socket] Identification response received:", response);
         if (response && response.ok) {
           this.authenticated = true;
-          console.log("[Socket] Device authenticated successfully");
-        } else {
-          console.error("[Socket] Authentication failed:", response);
         }
         resolve(response);
       });
     });
   }
 
-  // Mouse Control - Optimized for low latency
   sendPointerMove(dx: number, dy: number): void {
     if (!this.authenticated || !this.socket) return;
-    // No acknowledgement for speed
     this.socket.emit("control:pointer:move", { dx, dy } as PointerMoveCommand);
   }
 
@@ -165,7 +147,6 @@ class SocketService {
 
   sendPointerScroll(dx: number, dy: number): void {
     if (!this.authenticated || !this.socket) return;
-    // No acknowledgement for speed
     this.socket.emit("control:pointer:scroll", { dx, dy } as PointerScrollCommand);
   }
 
@@ -186,7 +167,6 @@ class SocketService {
     });
   }
 
-  // Keyboard Control
   sendKeyboardText(text: string): Promise<ControlResult> {
     return new Promise((resolve) => {
       if (!this.authenticated || !this.socket) {
@@ -238,17 +218,14 @@ class SocketService {
     });
   }
 
-  // Listen for device list changes
   onDevicesChanged(callback: (data: { devices: any[] }) => void): void {
     this.socket?.on("devices:changed", callback);
   }
 
-  // Error handling
   onError(callback: (data: { message: string; code?: string }) => void): void {
     this.socket?.on("error", callback);
   }
 
-  // Cleanup listeners
   removeAllListeners(): void {
     this.socket?.removeAllListeners();
   }

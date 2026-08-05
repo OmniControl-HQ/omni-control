@@ -8,11 +8,9 @@ export function useMediaControl() {
 
   const sendMediaCommand = (action: MediaAction) => {
     if (!isAuthenticated || !socketService.isAuthenticated()) {
-      console.log("[Media] Not authenticated, skipping command");
       return;
     }
 
-    console.log("[Media] Sending command:", action);
     socketService.sendMediaCommand(action);
   };
 
