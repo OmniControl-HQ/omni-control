@@ -50,6 +50,11 @@
     "copyright": "Copyright © 2026 OmniControl Community",
     "npmRebuild": false,
     "buildDependenciesFromSource": false,
+    "publish": {
+      "provider": "github",
+      "owner": "OmniControl-HQ",
+      "repo": "omni-control"
+    },
     "directories": {
       "output": "dist",
       "buildResources": "build"
