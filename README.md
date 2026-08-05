@@ -1,6 +1,9 @@
 <div align="center">
 
-# <img src=".github/logo.png" alt="OmniControl" width="48" height="48" style="vertical-align: middle;"/> OmniControl
+<h1 align="center">
+  <img src=".github/logo.png" alt="OmniControl" width="33" style="vertical-align: text-bottom;" />
+  Omni Control
+</h1>
 
 ### Remote PC Control from Your Mobile Device
 
@@ -43,9 +46,35 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 
 ---
 
+## 📥 Download
+
+<div align="center">
+
+### Desktop Server
+
+| Platform    | Download                                                                                                                                                                                                                                              | Size   |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| **Windows** | [Setup Installer](https://github.com/OmniControl-HQ/omni-control/releases/latest/download/Omni-Control-1.0.0-x64-Setup.exe) • [Portable](https://github.com/OmniControl-HQ/omni-control/releases/latest/download/Omni-Control-1.0.0-x64-Portable.exe) | ~76 MB |
+| **macOS**   | [DMG (Apple Silicon)](https://github.com/OmniControl-HQ/omni-control/releases/latest) • [DMG (Intel)](https://github.com/OmniControl-HQ/omni-control/releases/latest)                                                                                 | ~85 MB |
+| **Linux**   | [AppImage](https://github.com/OmniControl-HQ/omni-control/releases/latest) • [DEB](https://github.com/OmniControl-HQ/omni-control/releases/latest)                                                                                                    | ~90 MB |
+
+### Mobile App
+
+| Platform    | Download                                                              | Version     |
+| ----------- | --------------------------------------------------------------------- | ----------- |
+| **Android** | [APK](https://github.com/OmniControl-HQ/omni-control/releases/latest) | Coming Soon |
+| **iOS**     | [TestFlight](https://testflight.apple.com)                            | Coming Soon |
+
+> **📱 Build from source:** See [Mobile Setup](#-mobile-app-setup) for development instructions
+
+</div>
+
+---
+
 ## ✨ Features
 
 ### 🖱️ **Mouse & Trackpad**
+
 - Smooth cursor movement with gesture controls
 - Left, right, and middle click support
 - Smooth scrolling (horizontal & vertical)
@@ -53,6 +82,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - Adjustable sensitivity
 
 ### ⌨️ **Keyboard Control**
+
 - Full text input with multiline support
 - 15+ keyboard shortcuts (Copy, Paste, Cut, etc.)
 - Function keys and special characters
@@ -60,6 +90,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - 5000 character input limit
 
 ### 🎵 **Media Remote**
+
 - Play/Pause toggle
 - Next/Previous track
 - Volume controls (Up, Down, Mute)
@@ -67,6 +98,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - Works with any media player
 
 ### 📊 **System Monitoring**
+
 - Real-time CPU usage tracking
 - Memory utilization display
 - System uptime monitoring
@@ -74,6 +106,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - Connected devices overview
 
 ### 🔒 **Security**
+
 - PIN-based authentication (4-digit)
 - Optional PIN requirement
 - Connection activity logging
@@ -81,6 +114,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - Secure Socket.io communication
 
 ### 🚀 **Smart Desktop App**
+
 - System tray integration
 - Auto-start on boot (default enabled)
 - Runs in background 24/7
@@ -89,36 +123,12 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 
 ---
 
-## 📥 Download
-
-<div align="center">
-
-### Desktop Server
-
-| Platform | Download | Size |
-|----------|----------|------|
-| **Windows** | [Setup Installer](https://github.com/OmniControl-HQ/omni-control/releases/latest/download/Omni-Control-1.0.0-x64-Setup.exe) • [Portable](https://github.com/OmniControl-HQ/omni-control/releases/latest/download/Omni-Control-1.0.0-x64-Portable.exe) | ~76 MB |
-| **macOS** | [DMG (Apple Silicon)](https://github.com/OmniControl-HQ/omni-control/releases/latest) • [DMG (Intel)](https://github.com/OmniControl-HQ/omni-control/releases/latest) | ~85 MB |
-| **Linux** | [AppImage](https://github.com/OmniControl-HQ/omni-control/releases/latest) • [DEB](https://github.com/OmniControl-HQ/omni-control/releases/latest) | ~90 MB |
-
-### Mobile App
-
-| Platform | Download | Version |
-|----------|----------|---------|
-| **Android** | [APK](https://github.com/OmniControl-HQ/omni-control/releases/latest) | Coming Soon |
-| **iOS** | [TestFlight](https://testflight.apple.com) | Coming Soon |
-
-> **📱 Build from source:** See [Mobile Setup](#-mobile-app-setup) for development instructions
-
-</div>
-
----
-
 ## 🚀 Quick Start
 
 ### Desktop Setup (3 steps)
 
 1. **Download & Install**
+
    ```bash
    # Download the installer for your platform
    # Windows: Run the .exe installer
@@ -193,6 +203,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 ## 🛠️ Technology Stack
 
 ### Desktop Server
+
 - **Framework:** Electron 31 + Vite
 - **Backend:** Node.js + Fastify + Socket.io
 - **Frontend:** React 19 + TypeScript + TailwindCSS 4
@@ -200,6 +211,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - **Build:** electron-builder
 
 ### Mobile App
+
 - **Framework:** React Native 0.86 + Expo 57
 - **Language:** TypeScript 6
 - **Routing:** Expo Router (file-based)
@@ -208,6 +220,7 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 - **Camera:** Expo Camera (QR scanning)
 
 ### Shared
+
 - **Monorepo:** pnpm workspaces
 - **Type Safety:** 100% TypeScript
 - **Code Quality:** ESLint + TypeScript ESLint
@@ -321,6 +334,7 @@ omni-control/
 ### Desktop Server
 
 Default configuration:
+
 - **Port:** 4321
 - **Host:** 0.0.0.0 (all interfaces)
 - **Protocol:** WebSocket + HTTP polling fallback
@@ -329,6 +343,7 @@ Default configuration:
 ### Mobile Client
 
 Configurable in app:
+
 - **Server IP:** Manual entry or QR scan
 - **Connection PIN:** 4-digit authentication
 - **Mouse Sensitivity:** Adjustable (0.5x - 3x)
@@ -356,6 +371,7 @@ git push origin v1.0.1
 ```
 
 GitHub Actions will automatically:
+
 - ✅ Build for Windows, macOS, and Linux
 - ✅ Create installers for all platforms
 - ✅ Generate release notes
