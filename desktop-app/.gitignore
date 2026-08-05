@@ -1,0 +1,16 @@
+node_modules
+dist
+out
+*.log
+.DS_Store
+.env
+.env.local
+
+# electron-builder output
+dist_electron
+release
+
+# Build assets (except source files)
+build/*.ico
+build/*.icns
+build/dmg-background.png

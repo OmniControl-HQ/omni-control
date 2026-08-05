@@ -1,11 +1,17 @@
 {
   "name": "omnicontrol-desktop",
   "version": "1.0.0",
-  "description": "OmniControl Desktop Server App",
+  "description": "OmniControl - Remote PC Control Desktop Server",
+  "author": "OmniControl Team",
+  "homepage": "https://github.com/yourusername/omni-control",
   "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev --watch",
     "build": "electron-vite build",
+    "build:win": "pnpm build && electron-builder --win --x64",
+    "build:mac": "pnpm build && electron-builder --mac",
+    "build:linux": "pnpm build && electron-builder --linux",
+    "build:all": "pnpm build && electron-builder --win --mac --linux",
     "start": "electron-vite preview",
     "postinstall": "node scripts/ensure-electron.js",
     "lint": "eslint .",
@@ -30,11 +36,92 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.3.0",
     "electron": "^31.0.0",
+    "electron-builder": "^26.15.3",
     "electron-vite": "^2.3.0",
     "eslint": "^9.39.5",
     "globals": "^17.7.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.65.0",
     "vite": "^5.3.1"
+  },
+  "build": {
+    "appId": "com.omnicontrol.desktop",
+    "productName": "OmniControl",
+    "copyright": "Copyright © 2026 OmniControl Team",
+    "npmRebuild": false,
+    "buildDependenciesFromSource": false,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/@hurdlegroup/robotjs/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "${productName}-${version}-${arch}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "OmniControl"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "dmg": {
+      "title": "${productName} ${version}",
+      "icon": "build/icon.icns",
+      "background": "build/dmg-background.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 140,
+          "y": 180
+        },
+        {
+          "x": 400,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
   }
 }

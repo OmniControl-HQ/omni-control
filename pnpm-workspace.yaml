@@ -6,6 +6,7 @@ packages:
 allowBuilds:
   '@hurdlegroup/robotjs': set this to true or false
   electron: true
+  electron-winstaller: true
   esbuild: true
   omnicontrol-desktop: true
   omnicontrol-mobile: true
