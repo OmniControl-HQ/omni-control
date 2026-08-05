@@ -282,6 +282,29 @@ pnpm mobile:ios
 
 # Run in web browser (for testing)
 pnpm mobile:web
+
+# Build APK/IPA (requires Expo account)
+cd mobile-app
+pnpm run build:android    # Build Android APK
+pnpm run build:ios        # Build iOS IPA
+pnpm run build:all        # Build both platforms
+```
+
+#### EAS Build Setup (First Time)
+
+```bash
+# Install EAS CLI globally
+npm install -g eas-cli
+
+# Login to Expo account
+eas login
+
+# Configure project
+cd mobile-app
+eas build:configure
+
+# Update app.json with your project ID
+# The projectId will be shown after running eas build:configure
 ```
 
 ---
@@ -353,12 +376,16 @@ Configurable in app:
 
 ## 🚀 Creating Releases
 
-Releases are automated via GitHub Actions:
+Releases are automated via GitHub Actions. A single tag push builds **both desktop and mobile apps**:
 
 ```bash
-# 1. Update version
+# 1. Update versions
 cd desktop-app
 # Edit package.json: "version": "1.0.1"
+
+cd ../mobile-app
+# Edit package.json: "version": "1.0.1"
+# Edit app.json: "version": "1.0.1", increment versionCode/buildNumber
 
 # 2. Commit changes
 git add .
@@ -372,10 +399,30 @@ git push origin v1.0.1
 
 GitHub Actions will automatically:
 
-- ✅ Build for Windows, macOS, and Linux
+- ✅ Build desktop apps for Windows, macOS, and Linux
+- ✅ Build mobile apps for Android (APK) and iOS (IPA)
 - ✅ Create installers for all platforms
 - ✅ Generate release notes
-- ✅ Publish to GitHub Releases
+- ✅ Publish everything to GitHub Releases
+
+### Requirements
+
+**For GitHub Actions to build mobile apps, you need:**
+
+1. **Expo Account:** [Sign up at expo.dev](https://expo.dev/signup)
+2. **Expo Access Token:** 
+   - Go to [expo.dev/accounts/[username]/settings/access-tokens](https://expo.dev/accounts)
+   - Create a new token with "Read and write" permissions
+   - Add it as `EXPO_TOKEN` in your GitHub repository secrets
+     - Go to Settings → Secrets and variables → Actions
+     - Click "New repository secret"
+     - Name: `EXPO_TOKEN`
+     - Value: Your Expo access token
+
+3. **EAS Project ID:**
+   - Run `eas build:configure` in `mobile-app/` directory
+   - Copy the generated project ID
+   - Update `mobile-app/app.json` → `expo.extra.eas.projectId`
 
 See [RELEASING.md](RELEASING.md) for detailed instructions.
 

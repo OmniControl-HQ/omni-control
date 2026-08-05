@@ -1,28 +1,49 @@
 {
   "expo": {
     "name": "OmniControl",
-    "slug": "omnicontrol-mobile",
+    "slug": "omni-control",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "scheme": "omnicontrol",
+    "icon": "./assets/icon.png",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.omnicontrol.mobile"
+      "bundleIdentifier": "com.omnicontrol.mobile",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0f19"
       },
-      "package": "com.omnicontrol.mobile"
+      "package": "com.omnicontrol.mobile",
+      "versionCode": 1,
+      "permissions": ["CAMERA"]
     },
     "web": {
       "backgroundColor": "#0b0f19",
       "bundler": "metro"
     },
-    "plugins": ["expo-font", "expo-router"],
+    "plugins": [
+      "expo-font",
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#0b0f19"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "90a8bc4a-22bd-44cf-90a6-7888eee3fead"
+      }
     }
   }
 }
