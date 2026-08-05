@@ -164,6 +164,16 @@ function createWindow(): void {
 app.whenReady().then(async () => {
   await controlServer.start();
 
+  if (app.isPackaged) {
+    const loginSettings = app.getLoginItemSettings();
+    if (!loginSettings.openAtLogin && !loginSettings.wasOpenedAtLogin) {
+      app.setLoginItemSettings({
+        openAtLogin: true,
+        openAsHidden: true,
+      });
+    }
+  }
+
   createTray();
 
   const { wasOpenedAsHidden } = app.getLoginItemSettings();
