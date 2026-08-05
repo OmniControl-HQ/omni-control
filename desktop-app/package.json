@@ -2,7 +2,7 @@
   "name": "omnicontrol-desktop",
   "version": "1.0.0",
   "description": "Omni Control - Remote PC Control Desktop Server",
-  "author": "Omni Control Community",
+  "author": "Abdullah Al Mridul <rim89987@gmail.com>",
   "homepage": "https://github.com/OmniControl-HQ/omni-control",
   "main": "out/main/index.js",
   "scripts": {
