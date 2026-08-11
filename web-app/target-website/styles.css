@@ -1,25 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:wght@400;700&display=swap");
 
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --font-sans: "Inter", sans-serif;
-  --font-serif: "Lora", serif;
-  --font-mono: "Space Mono", monospace;
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-accent: #c5ff4a;
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+  }
+
+  ::selection {
+    @apply bg-white text-black;
+  }
 }
 
-body {
-  @apply bg-[#050505] text-white antialiased overflow-x-hidden;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
-::selection {
-  @apply bg-white text-black;
-}
-
-/* Lenis Smooth Scrolling */
+/* Lenis Smooth Scrolling Core CSS */
 html.lenis, html.lenis body {
   height: auto;
 }
