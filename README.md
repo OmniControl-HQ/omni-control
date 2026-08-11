@@ -9,9 +9,6 @@
 
 [![Build and Release](https://img.shields.io/github/actions/workflow/status/OmniControl-HQ/omni-control/release.yml?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/actions/workflows/release.yml)
 [![Latest Release](https://img.shields.io/github/v/release/OmniControl-HQ/omni-control?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/releases/latest)
-
-<!-- [![Downloads](https://img.shields.io/github/downloads/OmniControl-HQ/omni-control/total?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/releases) -->
-
 [![License](https://img.shields.io/github/license/OmniControl-HQ/omni-control?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
