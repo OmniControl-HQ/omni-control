@@ -70,7 +70,7 @@ jobs:
     name: Build Mobile (Android)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -78,7 +78,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -88,8 +88,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -118,13 +118,13 @@ jobs:
           cd mobile-app
           APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
           OUTPUT_APK="../OmniControl-${{ github.ref_name }}-android.apk"
-          
+
           if [ -f "$APK_PATH" ]; then
             cp "$APK_PATH" "$OUTPUT_APK"
             ls -lh "$OUTPUT_APK"
-            echo "✅ APK created successfully!"
+            echo "APK created successfully!"
           else
-            echo "❌ APK not found at $APK_PATH"
+            echo "APK not found at $APK_PATH"
             find android/app/build/outputs -name "*.apk"
             exit 1
           fi

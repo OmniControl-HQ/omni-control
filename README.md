@@ -9,7 +9,9 @@
 
 [![Build and Release](https://img.shields.io/github/actions/workflow/status/OmniControl-HQ/omni-control/release.yml?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/actions/workflows/release.yml)
 [![Latest Release](https://img.shields.io/github/v/release/OmniControl-HQ/omni-control?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/OmniControl-HQ/omni-control/total?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/releases)
+
+<!-- [![Downloads](https://img.shields.io/github/downloads/OmniControl-HQ/omni-control/total?style=flat-square&logo=github)](https://github.com/OmniControl-HQ/omni-control/releases) -->
+
 [![License](https://img.shields.io/github/license/OmniControl-HQ/omni-control?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
@@ -60,12 +62,13 @@ Turn your phone into a wireless mouse, keyboard, and media remote
 
 ### Mobile App
 
-| Platform    | Download                                                              | Version     |
-| ----------- | --------------------------------------------------------------------- | ----------- |
-| **Android** | [APK](https://github.com/OmniControl-HQ/omni-control/releases/latest) | Coming Soon |
-| **iOS**     | [TestFlight](https://testflight.apple.com)                            | Coming Soon |
+| Platform    | Download                                                                                                               | Size    |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
+| **Android** | [Download APK](https://github.com/OmniControl-HQ/omni-control/releases/latest/download/OmniControl-v1.0.0-android.apk) | ~100 MB |
+| **iOS**     | Coming Soon (Build from source for now)                                                                                | -       |
 
-> **📱 Build from source:** See [Mobile Setup](#-mobile-app-setup) for development instructions
+> **📱 Android Installation:** Download APK → Enable "Install from Unknown Sources" → Open APK to install  
+> **🍎 iOS:** See [Mobile Setup](#mobile-app-setup) for building locally with Expo
 
 </div>
 
@@ -282,30 +285,24 @@ pnpm mobile:ios
 
 # Run in web browser (for testing)
 pnpm mobile:web
-
-# Build APK/IPA (requires Expo account)
-cd mobile-app
-pnpm run build:android    # Build Android APK
-pnpm run build:ios        # Build iOS IPA
-pnpm run build:all        # Build both platforms
 ```
 
-#### EAS Build Setup (First Time)
+#### Building Android APK Locally
 
 ```bash
-# Install EAS CLI globally
-npm install -g eas-cli
-
-# Login to Expo account
-eas login
-
-# Configure project
 cd mobile-app
-eas build:configure
 
-# Update app.json with your project ID
-# The projectId will be shown after running eas build:configure
+# Generate native Android project
+npx expo prebuild --platform android --clean
+
+# Build release APK
+cd android
+./gradlew assembleRelease
+
+# APK location: android/app/build/outputs/apk/release/app-release.apk
 ```
+
+**Note:** iOS builds require Apple Developer account and macOS with Xcode.
 
 ---
 
@@ -385,7 +382,7 @@ cd desktop-app
 
 cd ../mobile-app
 # Edit package.json: "version": "1.0.1"
-# Edit app.json: "version": "1.0.1", increment versionCode/buildNumber
+# Edit app.json: "version": "1.0.1", increment versionCode
 
 # 2. Commit changes
 git add .
@@ -400,31 +397,29 @@ git push origin v1.0.1
 GitHub Actions will automatically:
 
 - ✅ Build desktop apps for Windows, macOS, and Linux
-- ✅ Build mobile apps for Android (APK) and iOS (IPA)
+- ✅ Build Android APK locally (no cloud queue!)
 - ✅ Create installers for all platforms
 - ✅ Generate release notes
 - ✅ Publish everything to GitHub Releases
 
-### Requirements
+### What Gets Built
 
-**For GitHub Actions to build mobile apps, you need:**
+**Desktop:**
 
-1. **Expo Account:** [Sign up at expo.dev](https://expo.dev/signup)
-2. **Expo Access Token:** 
-   - Go to [expo.dev/accounts/[username]/settings/access-tokens](https://expo.dev/accounts)
-   - Create a new token with "Read and write" permissions
-   - Add it as `EXPO_TOKEN` in your GitHub repository secrets
-     - Go to Settings → Secrets and variables → Actions
-     - Click "New repository secret"
-     - Name: `EXPO_TOKEN`
-     - Value: Your Expo access token
+- Windows: Setup installer + Portable EXE
+- macOS: DMG (Apple Silicon + Intel)
+- Linux: AppImage + DEB package
 
-3. **EAS Project ID:**
-   - Run `eas build:configure` in `mobile-app/` directory
-   - Copy the generated project ID
-   - Update `mobile-app/app.json` → `expo.extra.eas.projectId`
+**Mobile:**
 
-See [RELEASING.md](RELEASING.md) for detailed instructions.
+- Android: Production-ready APK (~50 MB)
+- iOS: Not yet configured (build locally for now)
+
+### Build Time
+
+- Desktop builds: ~10-15 minutes (parallel)
+- Android APK: ~15-20 minutes (local Gradle build)
+- Total release time: ~20-25 minutes
 
 ---
 
