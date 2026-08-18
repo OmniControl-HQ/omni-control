@@ -1,7 +1,0 @@
-{
-  "buildCommand": "pnpm web:build",
-  "devCommand": "pnpm web:dev",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "framework": null,
-  "outputDirectory": "web-app/.next"
-}
