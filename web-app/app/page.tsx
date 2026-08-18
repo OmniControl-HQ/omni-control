@@ -1,4 +1,14 @@
 export default function Home() {
+  const navItems = [
+    { name: "Home", href: "#about" },
+    { name: "Features", href: "#features" },
+    { name: "Download", href: "#download" },
+    { name: "Documentation", href: "#setup" },
+    { name: "Screenshots", href: "#screenshots" },
+    { name: "GitHub", href: "https://github.com/Omni Control-HQ/omni-control" },
+    { name: "Support", href: "#why" },
+  ];
+
   return (
     <div>
       {/* Header */}
@@ -32,18 +42,10 @@ export default function Home() {
             flexWrap: "wrap",
           }}
         >
-          {[
-            "Home",
-            "Features",
-            "Download",
-            "Documentation",
-            "Screenshots",
-            "GitHub",
-            "Support",
-          ].map((item) => (
+          {navItems.map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.name}
+              href={item.href}
               style={{
                 color: "#fff",
                 textDecoration: "none",
@@ -54,7 +56,7 @@ export default function Home() {
                 border: "1px solid rgba(255,255,255,0.3)",
               }}
             >
-              {item}
+              {item.name}
             </a>
           ))}
         </nav>
@@ -72,7 +74,7 @@ export default function Home() {
           }}
         >
           {/* About */}
-          <section style={{ marginBottom: "30px" }}>
+          <section id="about" style={{ marginBottom: "30px" }}>
             <h2
               style={{
                 fontSize: "20px",
@@ -107,7 +109,7 @@ export default function Home() {
           </section>
 
           {/* Screenshots */}
-          <section style={{ marginBottom: "30px" }}>
+          <section id="screenshots" style={{ marginBottom: "30px" }}>
             <h2
               style={{
                 fontSize: "20px",
@@ -131,9 +133,12 @@ export default function Home() {
                   padding: "60px 20px",
                   textAlign: "center",
                   color: "#666",
+                  fontSize: "14px",
                 }}
               >
                 Desktop App Screenshot
+                <br />
+                <small>(Windows/macOS/Linux)</small>
               </div>
               <div
                 style={{
@@ -142,15 +147,18 @@ export default function Home() {
                   padding: "60px 20px",
                   textAlign: "center",
                   color: "#666",
+                  fontSize: "14px",
                 }}
               >
                 Mobile App Screenshot
+                <br />
+                <small>(Android/iOS)</small>
               </div>
             </div>
           </section>
 
           {/* Why Choose */}
-          <section style={{ marginBottom: "30px" }}>
+          <section id="why" style={{ marginBottom: "30px" }}>
             <h2
               style={{
                 fontSize: "20px",
@@ -188,7 +196,7 @@ export default function Home() {
           </section>
 
           {/* Features */}
-          <section>
+          <section id="features" style={{ marginBottom: "30px" }}>
             <h2
               style={{
                 fontSize: "20px",
@@ -281,7 +289,7 @@ export default function Home() {
           </section>
 
           {/* Download */}
-          <section style={{ marginTop: "30px" }}>
+          <section id="download" style={{ marginBottom: "30px" }}>
             <h2
               style={{
                 fontSize: "20px",
@@ -350,7 +358,7 @@ export default function Home() {
           </section>
 
           {/* How to Use */}
-          <section style={{ marginTop: "30px" }}>
+          <section id="setup">
             <h2
               style={{
                 fontSize: "20px",
@@ -403,7 +411,7 @@ export default function Home() {
             GitHub
           </a>{" "}
           |
-          <a href="#" style={{ color: "#fff", marginLeft: "10px" }}>
+          <a href="#setup" style={{ color: "#fff", marginLeft: "10px" }}>
             Documentation
           </a>{" "}
           |
