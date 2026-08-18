@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AETHERIC - Digital Creative Studio",
-  description: "We are a boutique creative studio specializing in high-end digital experiences that bridge the gap between art and technology.",
+  title: "OmniControl - Control Your PC from Your Phone",
+  description: "Turn your smartphone into a wireless mouse, keyboard, and media remote. Free, secure, and works seamlessly across all platforms.",
 };
 
 export default function RootLayout({

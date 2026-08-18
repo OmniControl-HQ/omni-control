@@ -2,42 +2,42 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, Smartphone, Zap, Layers } from 'lucide-react';
+import { Mouse, Keyboard, Music, Shield } from 'lucide-react';
 
 const services = [
   {
-    title: "Digital Strategy",
-    description: "Defining the path to digital excellence through market research and brand positioning.",
-    icon: <Zap className="text-accent" size={32} />,
-    tags: ["Research", "Planning", "Growth"]
+    title: "Wireless Mouse",
+    description: "Smooth cursor control with multi-touch gestures, scroll, and all click actions from your phone's touchscreen.",
+    icon: <Mouse className="text-[#c5ff4a]" size={32} />,
+    tags: ["Gestures", "Scroll", "Multi-touch"]
   },
   {
-    title: "UI/UX Design",
-    description: "Creating intuitive, aesthetically pleasing interfaces that prioritize user experience.",
-    icon: <Monitor className="text-accent" size={32} />,
-    tags: ["Interface", "Experience", "Prototyping"]
+    title: "Full Keyboard",
+    description: "Type naturally with text input and 15+ keyboard shortcuts for maximum productivity on the go.",
+    icon: <Keyboard className="text-[#c5ff4a]" size={32} />,
+    tags: ["Text Input", "Shortcuts", "Fast Typing"]
   },
   {
-    title: "Development",
-    description: "Building robust, scalable digital products using cutting-edge technologies.",
-    icon: <Smartphone className="text-accent" size={32} />,
-    tags: ["React", "Web3", "E-commerce"]
+    title: "Media Remote",
+    description: "Control playback, volume, and tracks from your phone while watching movies or listening to music.",
+    icon: <Music className="text-[#c5ff4a]" size={32} />,
+    tags: ["Play/Pause", "Volume", "Track Control"]
   },
   {
-    title: "Brand Identity",
-    description: "Crafting unique visual languages that resonate with your target audience.",
-    icon: <Layers className="text-accent" size={32} />,
-    tags: ["Logo", "Typography", "Motion"]
+    title: "Secure Connection",
+    description: "PIN-protected authentication and local network communication ensure complete privacy and security.",
+    icon: <Shield className="text-[#c5ff4a]" size={32} />,
+    tags: ["PIN Auth", "Local Only", "Private"]
   }
 ];
 
 const Services: React.FC = () => {
   return (
-    <section id="services" className="py-32 px-6 bg-black relative z-10">
+    <section id="features" className="py-32 px-6 bg-black relative z-10">
       <div className="max-w-7xl mx-auto">
         <div className="mb-24">
-          <h2 className="text-xs font-mono uppercase tracking-[0.4em] text-white/40 mb-4">Expertise</h2>
-          <p className="text-5xl md:text-7xl font-serif text-white">Our Services</p>
+          <h2 className="text-xs font-mono uppercase tracking-[0.4em] text-white/40 mb-4">Powerful Features</h2>
+          <p className="text-5xl md:text-7xl font-serif text-white">Everything You Need</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/10 border border-white/10">

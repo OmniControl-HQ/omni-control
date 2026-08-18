@@ -15,18 +15,17 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Work', href: '#work' },
-    { name: 'Studio', href: '#studio' },
-    { name: 'Services', href: '#services' },
-    { name: 'Process', href: '#process' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Features', href: '#features' },
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Download', href: '#download' },
+    { name: 'GitHub', href: 'https://github.com/OmniControl-HQ/omni-control' },
   ];
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'py-4 bg-black/80 backdrop-blur-lg border-b border-white/10' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         <a href="/" className="text-2xl font-serif font-bold tracking-tighter text-white">
-          AETHERIC<span className="text-primary">.</span>
+          OMNICONTROL<span className="text-[#c5ff4a]">.</span>
         </a>
 
         {/* Desktop Nav */}
@@ -41,9 +40,12 @@ const Navbar: React.FC = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
-          <button className="ml-4 px-6 py-2 border border-white/20 rounded-full text-[10px] font-mono uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
-            Start a Project
-          </button>
+          <a 
+            href="#download"
+            className="ml-4 px-6 py-2 border border-white/20 rounded-full text-[10px] font-mono uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300"
+          >
+            Download Free
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -75,9 +77,12 @@ const Navbar: React.FC = () => {
                   {link.name}
                 </a>
               ))}
-              <button className="w-full py-4 bg-white text-black font-bold rounded-lg">
-                Start a Project
-              </button>
+              <a
+                href="#download"
+                className="w-full py-4 bg-white text-black font-bold rounded-lg text-center"
+              >
+                Download Free
+              </a>
             </div>
           </motion.div>
         )}
