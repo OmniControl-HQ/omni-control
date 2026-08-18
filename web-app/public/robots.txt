@@ -1,0 +1,9 @@
+# robots.txt for Omni Control
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://omni-control.vercel.app/sitemap.xml
+
+# Crawl delay (optional - for respectful crawling)
+Crawl-delay: 1

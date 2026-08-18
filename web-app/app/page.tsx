@@ -5,7 +5,7 @@ export default function Home() {
     { name: "Download", href: "#download" },
     { name: "Documentation", href: "#setup" },
     { name: "Screenshots", href: "#screenshots" },
-    { name: "GitHub", href: "https://github.com/Omni Control-HQ/omni-control" },
+    { name: "GitHub", href: "https://github.com/OmniControl-HQ/omni-control" },
     { name: "Support", href: "#why" },
   ];
 
@@ -29,8 +29,8 @@ export default function Home() {
           Omni Control
         </h1>
         <p style={{ fontSize: "18px", color: "#fff", margin: "0 0 25px 0" }}>
-          Free Open Source Remote PC Control Software - Control Your Computer
-          from Your Phone
+          Free Open Source Remote PC Control Software - Turn Your Smartphone
+          Into a Wireless Trackpad, Keyboard & Media Controller
         </p>
 
         {/* Navigation */}
@@ -87,24 +87,23 @@ export default function Home() {
             <p style={{ marginBottom: "12px" }}>
               <strong>Omni Control</strong> is a free, open-source remote
               desktop control application that transforms your smartphone into a
-              powerful wireless mouse, keyboard, and media remote for your PC.
-              Control your Windows, macOS, or Linux computer from anywhere in
-              your home using your Android or iOS device.
+              powerful wireless trackpad, keyboard, and media remote for your
+              PC. Control your Windows, macOS, or Linux computer from anywhere
+              in your home using your Android or iOS device.
             </p>
             <p style={{ marginBottom: "12px" }}>
               Unlike commercial remote control software that requires
               subscriptions or contains ads, Omni Control is completely free and
               respects your privacy. All communication happens locally on your
-              WiFi network - no internet connection required, no data
-              collection, and no third-party servers.
+              WiFi network through fast Socket.io protocol - no internet
+              connection required, no data collection, and no third-party
+              servers.
             </p>
             <p>
-              Built with modern technologies including{" "}
-              <a href="https://nodejs.org">Node.js</a>,{" "}
-              <a href="https://reactnative.dev">React Native</a>, and{" "}
-              <a href="https://socket.io">Socket.io</a>, Omni Control offers
-              real-time, low-latency control with enterprise-grade security
-              through PIN-protected authentication.
+              Built with modern technologies including Electron, React Native,
+              Fastify, and RobotJS, Omni Control offers real-time, low-latency
+              control with secure 4-digit PIN authentication to protect your
+              connection.
             </p>
           </section>
 
@@ -124,35 +123,57 @@ export default function Home() {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gap: "15px",
+                alignItems: "start",
               }}
             >
               <div
                 style={{
-                  background: "#ddd",
                   border: "1px solid #999",
-                  padding: "60px 20px",
                   textAlign: "center",
-                  color: "#666",
-                  fontSize: "14px",
                 }}
               >
-                Desktop App Screenshot
-                <br />
-                <small>(Windows/macOS/Linux)</small>
+                <img
+                  src="/screenshots/desktop-dashboard.png"
+                  alt="Desktop Dashboard - Omni Control Server"
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+                <p
+                  style={{
+                    padding: "8px",
+                    fontSize: "13px",
+                    color: "#666",
+                    margin: 0,
+                  }}
+                >
+                  Desktop Server Dashboard
+                </p>
               </div>
               <div
                 style={{
-                  background: "#ddd",
                   border: "1px solid #999",
-                  padding: "60px 20px",
                   textAlign: "center",
-                  color: "#666",
-                  fontSize: "14px",
                 }}
               >
-                Mobile App Screenshot
-                <br />
-                <small>(Android/iOS)</small>
+                <img
+                  src="/screenshots/mobile-control.png"
+                  alt="Mobile App - Wireless Trackpad Control"
+                  style={{
+                    width: "50%",
+                    height: "auto",
+                    display: "block",
+                    margin: "0 auto",
+                  }}
+                />
+                <p
+                  style={{
+                    padding: "8px",
+                    fontSize: "13px",
+                    color: "#666",
+                    margin: 0,
+                  }}
+                >
+                  Mobile Control Interface
+                </p>
               </div>
             </div>
           </section>
@@ -170,7 +191,7 @@ export default function Home() {
             </h2>
             <p style={{ marginBottom: "10px" }}>
               <strong>Omni Control</strong> is developed by passionate{" "}
-              <a href="https://github.com/Omni Control-HQ">
+              <a href="https://github.com/OmniControl-HQ">
                 open-source contributors
               </a>{" "}
               who believe in creating accessible technology for everyone.
@@ -180,14 +201,13 @@ export default function Home() {
             </p>
             <p style={{ marginBottom: "10px" }}>
               Join thousands of users who have replaced expensive remote control
-              solutions with Omni Control. If you find this software valuable,
-              consider <a href="#donate">supporting the project</a> to help us
-              continue development and maintenance.
+              solutions with Omni Control. This software is 100% free with no
+              ads, no tracking, and no premium features locked behind paywalls.
             </p>
             <p>
               Want to contribute? We welcome developers, translators, and
               testers! Check our{" "}
-              <a href="https://github.com/Omni Control-HQ/omni-control">
+              <a href="https://github.com/OmniControl-HQ/omni-control">
                 GitHub repository
               </a>{" "}
               to get started with contributing to this free remote control
@@ -204,86 +224,50 @@ export default function Home() {
                 fontWeight: "bold",
               }}
             >
-              Comprehensive Remote Control Features
+              Remote Control Features
             </h2>
             <ul style={{ paddingLeft: "20px" }}>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Intuitive Touch Interface:</strong> Clean, modern UI
-                optimized for mobile devices
+                <strong>Trackpad & Mouse Control:</strong> Smooth cursor
+                navigation with multi-touch gestures, customizable sensitivity,
+                and complete click controls (left, right, middle click)
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Zero Ads & Tracking:</strong> Completely ad-free with no
-                user analytics or data collection
+                <strong>Full Keyboard Support:</strong> Complete multiline text
+                input with function keys and system shortcuts support
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Advanced Control System:</strong>
-                <ul style={{ marginTop: "5px", paddingLeft: "20px" }}>
-                  <li>
-                    Control multiple computers simultaneously from one device
-                  </li>
-                  <li>
-                    Specialized modes for mouse, keyboard, and media control
-                  </li>
-                  <li>Customizable gesture controls and shortcuts</li>
-                </ul>
+                <strong>Media Remote:</strong> Universal media keys for volume
+                control, play/pause, and track navigation - works with any media
+                player
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Professional-Grade Features:</strong>
-                <ul style={{ marginTop: "5px", paddingLeft: "20px" }}>
-                  <li>
-                    <strong>Wireless Mouse Control:</strong> Smooth cursor
-                    movement with multi-touch gestures, scrolling, and all click
-                    actions
-                  </li>
-                  <li>
-                    <strong>Full Keyboard Support:</strong> Complete text input
-                    with 15+ keyboard shortcuts (Copy, Paste, Cut, Undo, etc.)
-                  </li>
-                  <li>
-                    <strong>Media Remote:</strong> Play/pause, volume control,
-                    track navigation for any media player
-                  </li>
-                  <li>
-                    <strong>PIN Authentication:</strong> Secure 4-digit PIN
-                    protection for all connections
-                  </li>
-                  <li>
-                    <strong>End-to-End Encryption:</strong> Optional encryption
-                    for sensitive environments
-                  </li>
-                </ul>
+                <strong>System Monitoring:</strong> Real-time monitoring of CPU
+                usage, RAM utilization, and connected devices directly from your
+                phone
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Web-Based Remote Access:</strong> Control your PC
-                through any web browser using our React-powered interface
+                <strong>Secure Connection:</strong> Fast Socket.io communication
+                protocol protected by 4-digit PIN authentication
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Multi-Device Management:</strong> Save and switch
-                between multiple PCs with one tap
+                <strong>Background Service:</strong> Lightweight system tray
+                application with auto-start support across Windows, macOS, and
+                Linux
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Network Intelligence:</strong>
-                <ul style={{ marginTop: "5px", paddingLeft: "20px" }}>
-                  <li>Automatic device discovery on local network</li>
-                  <li>QR code pairing for instant connection setup</li>
-                  <li>Connection history and favorites</li>
-                </ul>
+                <strong>Cross-Platform Compatibility:</strong> Desktop server
+                runs on Windows, macOS, and Linux. Mobile app available for
+                Android (iOS coming soon)
               </li>
               <li style={{ marginBottom: "8px" }}>
-                <strong>Smart Connectivity:</strong> Automatic local network
-                discovery with UPnP/NAT-PMP port forwarding
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <strong>Cross-Platform Compatibility:</strong> Works seamlessly
-                on Windows 10/11, macOS, Linux, Android 8+, and iOS 12+
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                <strong>System Tray Integration:</strong> Desktop app runs
-                quietly in background with auto-start on boot
+                <strong>Zero Configuration:</strong> Simple IP address and PIN
+                connection - no complex setup required
               </li>
               <li>
-                <strong>Open Source & Extensible:</strong> MIT licensed source
-                code available for customization and community contributions
+                <strong>Open Source & Free Forever:</strong> MIT licensed source
+                code, completely free with no ads, no tracking, and no premium
+                features
               </li>
             </ul>
           </section>
@@ -307,25 +291,25 @@ export default function Home() {
                   marginBottom: "10px",
                 }}
               >
-                Desktop Applications (Server)
+                Desktop Server (Required)
               </h3>
               <ul style={{ paddingLeft: "20px" }}>
                 <li style={{ marginBottom: "5px" }}>
-                  <a href="https://github.com/Omni Control-HQ/omni-control/releases/latest">
-                    <strong>Windows Remote Control:</strong> Setup Installer &
-                    Portable EXE (~76 MB) - Compatible with Windows 10/11
+                  <a href="https://github.com/OmniControl-HQ/omni-control/releases/latest">
+                    <strong>Windows:</strong> Setup Installer & Portable EXE -
+                    Compatible with Windows 10/11
                   </a>
                 </li>
                 <li style={{ marginBottom: "5px" }}>
-                  <a href="https://github.com/Omni Control-HQ/omni-control/releases/latest">
-                    <strong>macOS Remote Control:</strong> DMG for Apple Silicon
-                    & Intel (~85 MB) - macOS 11 Big Sur and later
+                  <a href="https://github.com/OmniControl-HQ/omni-control/releases/latest">
+                    <strong>macOS:</strong> DMG for Apple Silicon & Intel Macs -
+                    macOS 11 Big Sur and later
                   </a>
                 </li>
                 <li style={{ marginBottom: "5px" }}>
-                  <a href="https://github.com/Omni Control-HQ/omni-control/releases/latest">
-                    <strong>Linux Remote Control:</strong> AppImage & DEB
-                    Package (~90 MB) - Ubuntu, Debian, Fedora, Arch
+                  <a href="https://github.com/OmniControl-HQ/omni-control/releases/latest">
+                    <strong>Linux:</strong> AppImage & DEB Package - Ubuntu,
+                    Debian, Fedora, Arch Linux
                   </a>
                 </li>
               </ul>
@@ -338,20 +322,18 @@ export default function Home() {
                   marginBottom: "10px",
                 }}
               >
-                Mobile Applications (Client)
+                Mobile Client
               </h3>
               <ul style={{ paddingLeft: "20px" }}>
                 <li style={{ marginBottom: "5px" }}>
-                  <a href="https://github.com/Omni Control-HQ/omni-control/releases/latest">
-                    <strong>Android Remote Control App:</strong> APK Download
-                    (~50 MB) - Android 8.0 Oreo and above
+                  <a href="https://github.com/OmniControl-HQ/omni-control/releases/latest">
+                    <strong>Android:</strong> APK Download - Android 8.0 Oreo
+                    and above (Enable "Install from Unknown Sources")
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/Omni Control-HQ/omni-control">
-                    <strong>iOS Remote Control App:</strong> Build from source
-                    (TestFlight beta coming soon) - iOS 12+
-                  </a>
+                  <strong>iOS:</strong> Coming Soon - Build locally with Expo
+                  for now
                 </li>
               </ul>
             </div>
@@ -366,27 +348,27 @@ export default function Home() {
                 fontWeight: "bold",
               }}
             >
-              How to Setup Remote PC Control
+              Quick Start Guide - Setup Remote PC Control in 3 Steps
             </h2>
             <ol style={{ paddingLeft: "20px" }}>
               <li style={{ marginBottom: "8px" }}>
-                Download and install the desktop application on your computer
+                <strong>Launch Server:</strong> Download and open Omni Control
+                on your desktop computer
               </li>
               <li style={{ marginBottom: "8px" }}>
-                Download and install the mobile app on your smartphone or tablet
+                <strong>Get Credentials:</strong> Note the IP Address and
+                4-digit PIN displayed on the dashboard
               </li>
               <li style={{ marginBottom: "8px" }}>
-                Ensure both devices are connected to the same WiFi network
+                <strong>Connect Mobile:</strong> Download the mobile app, enter
+                your PC's IP address and PIN, then tap Connect
               </li>
-              <li style={{ marginBottom: "8px" }}>
-                Open the desktop app and note the PIN displayed on screen
-              </li>
-              <li style={{ marginBottom: "8px" }}>
-                Open the mobile app and scan the QR code or enter the IP address
-                manually
-              </li>
-              <li>Start controlling your PC wirelessly!</li>
             </ol>
+            <p style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
+              <strong>Note:</strong> Both devices must be connected to the same
+              WiFi network. Omni Control uses local network communication for
+              fast, secure control.
+            </p>
           </section>
         </div>
       </main>
@@ -405,7 +387,7 @@ export default function Home() {
         </p>
         <p>
           <a
-            href="https://github.com/Omni Control-HQ/omni-control"
+            href="https://github.com/OmniControl-HQ/omni-control"
             style={{ color: "#fff" }}
           >
             GitHub
@@ -415,22 +397,26 @@ export default function Home() {
             Documentation
           </a>{" "}
           |
-          <a href="#" style={{ color: "#fff", marginLeft: "10px" }}>
-            Privacy Policy
+          <a
+            href="https://github.com/OmniControl-HQ/omni-control/releases/latest"
+            style={{ color: "#fff", marginLeft: "10px" }}
+          >
+            Download
           </a>{" "}
           |
           <a
-            href="https://github.com/Omni Control-HQ/omni-control/blob/main/LICENSE"
+            href="https://github.com/OmniControl-HQ/omni-control/blob/main/LICENSE"
             style={{ color: "#fff", marginLeft: "10px" }}
           >
             MIT License
           </a>
         </p>
         <p style={{ marginTop: "10px", fontSize: "11px", opacity: 0.8 }}>
-          Keywords: remote desktop control, wireless mouse, remote keyboard, PC
-          control app, free remote control software, open source remote desktop,
-          WiFi PC control, smartphone remote control, wireless PC remote,
-          cross-platform remote control
+          Keywords: remote desktop control, wireless trackpad, wireless mouse,
+          remote keyboard, PC control app, free remote control software, open
+          source remote desktop, WiFi PC control, smartphone remote control,
+          wireless PC remote, cross-platform remote control, media remote
+          control
         </p>
       </footer>
     </div>
