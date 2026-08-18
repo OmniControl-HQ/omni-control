@@ -73,7 +73,7 @@
 
 ```bash
 # Clone the repository
-git clone [https://github.com/OmniControl-HQ/omni-control.git](https://github.com/OmniControl-HQ/omni-control.git)
+git clone https://github.com/OmniControl-HQ/omni-control.git
 cd omni-control
 
 # Install dependencies
