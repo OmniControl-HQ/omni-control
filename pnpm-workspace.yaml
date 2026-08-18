@@ -4,7 +4,7 @@ packages:
   - "web-app"
 
 allowBuilds:
-  '@hurdlegroup/robotjs': set this to true or false
+  '@hurdlegroup/robotjs': true
   electron: true
   electron-winstaller: true
   esbuild: true

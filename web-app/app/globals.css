@@ -1,59 +1,36 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:wght@400;700&display=swap");
-
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: "Inter", sans-serif;
-  --font-serif: "Lora", serif;
-  --font-mono: "Space Mono", monospace;
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-accent: #c5ff4a;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  @apply bg-[#050505] text-white antialiased overflow-x-hidden;
+  background: #000;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-::selection {
-  @apply bg-white text-black;
+a {
+  color: #00ff00;
+  text-decoration: underline;
 }
 
-/* Lenis Smooth Scrolling */
-html.lenis, html.lenis body {
-  height: auto;
+a:hover {
+  color: #fff;
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+h1, h2, h3 {
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #050505;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #222;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #333;
+pre {
+  background: #111;
+  border: 1px solid #0f0;
+  padding: 10px;
+  overflow-x: auto;
 }
