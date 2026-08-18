@@ -2,6 +2,7 @@
   "name": "omnicontrol-monorepo",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "desktop:dev": "pnpm --filter omnicontrol-desktop dev",
     "desktop:build": "pnpm --filter omnicontrol-desktop build",
